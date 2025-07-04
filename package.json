@@ -1,0 +1,37 @@
+{
+  "name": "DracoDashboard",
+  "version": "3.0",
+  "description": "The better version of Dashboard For DracoPanel.",
+  "main": "index.js",
+  "author": "Hopingboyz",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "@keyv/sqlite": "^3.6.7",
+    "@tailwindcss/forms": "^0.5.7",
+    "axios": "^1.3.4",
+    "cat-loggr": "^1.2.2",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.10",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "express-ws": "^5.0.2",
+    "fs": "^0.0.1-security",
+    "ipaddr.js": "^2.2.0",
+    "keyv": "^4.5.4",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "randomstring": "^1.2.3",
+    "request-ip": "^3.3.0",
+    "tailwindcss": "^3.4.4",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

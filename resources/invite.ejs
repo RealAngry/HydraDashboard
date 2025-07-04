@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gradient-to-br from-gray-900 to-gray-800">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation to <%= name %> |</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#1e1e1e',
+                            700: '#2d2d2d',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'gradient-x': 'gradient-x 8s ease infinite',
+                    },
+                    keyframes: {
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size':'200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size':'200% 200%',
+                                'background-position': 'right center'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glow {
+            text-shadow: 0 0 10px rgba(20, 184, 166, 0.5);
+        }
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(90deg, #14b8a6, #0ea5e9);
+        }
+    </style>
+</head>
+
+<body class="h-full font-sans text-gray-200 antialiased">
+    <!-- Animated background particles -->
+    <div class="fixed inset-0 overflow-hidden opacity-20">
+        <div class="absolute inset-0 bg-[url('https://mythicaldash.com/_next/static/media/dots.7d6062f3.svg')] bg-repeat opacity-30"></div>
+    </div>
+
+    <div class="relative min-h-full flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Header/Navigation -->
+        <header class="absolute top-0 left-0 right-0 py-6 px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <span class="text-xl font-bold text-white"><%= name %></span>
+                </div>
+                <a href="/dashboard" class="text-sm font-medium text-gray-400 hover:text-primary-400 transition-colors">
+                    Visit our website
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto w-full">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
+                <!-- Left Column - Text Content -->
+                <div class="lg:w-1/2 space-y-8 z-10">
+                    <div class="space-y-4">
+                            
+                        </span>
+                        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white">
+                            You've been invited to <span class="gradient-text"><%= name %></span>
+                        </h1>
+                        <p class="text-lg text-gray-400 max-w-2xl">
+                            Join thousands of gamers enjoying premium hosting with zero hassle. 
+                            We power over 20,000 game servers with 99.9% uptime and blazing fast performance.
+                        </p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 bg-primary-900/30 p-2 rounded-lg border border-primary-800/50">
+                                <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-300">Free plan available with no credit card required</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 bg-primary-900/30 p-2 rounded-lg border border-primary-800/50">
+                                <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-300">Instant setup with one-click server creation</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 bg-primary-900/30 p-2 rounded-lg border border-primary-800/50">
+                                <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-300">24/7 support from our dedicated team</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="./login/discord" class="flex items-center justify-center px-8 py-3.5 rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 text-white font-medium hover:opacity-90 transition-all shadow-lg shadow-primary-500/20 hover:shadow-primary-500/30">
+                            Accept Invitation
+                            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                        <a href="/" class="flex items-center justify-center px-8 py-3.5 rounded-xl bg-gray-800/50 border border-gray-700 text-white font-medium hover:bg-gray-700/30 transition-all">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column - Illustration -->
+                <div class="lg:w-1/2 relative hidden lg:block">
+                    <div class="relative w-full h-96 lg:h-auto aspect-square">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-primary-900/10 rounded-2xl blur-xl"></div>
+                        <div class="relative h-full flex items-center justify-center p-8">
+                            <div class="relative w-full h-full bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 rounded-2xl overflow-hidden flex items-center justify-center">
+                                <div class="absolute inset-0 bg-[url('https://mythicaldash.com/_next/static/media/grid.5a523905.svg')] bg-[length:100px_100px] opacity-10"></div>
+                                <div class="relative z-10 p-8 text-center">
+                                    <div class="inline-block p-6 rounded-2xl bg-gray-800/50 border border-gray-700/50 mb-6">
+                                        <svg class="w-12 h-12 mx-auto text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linecap="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-xl font-semibold text-white mb-2">Welcome to <%= name %></h3>
+                                    <p class="text-gray-400 max-w-xs mx-auto">Your exclusive gaming server awaits. Join now to get started!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="absolute bottom-0 left-0 right-0 py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+            <div class="max-w-7xl mx-auto border-t border-gray-800/50 pt-6">
+                <p>© 2025 <%= name %>. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

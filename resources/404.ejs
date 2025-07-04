@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | MythicalDash</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" as="style">
+    <link rel="preload" as="image" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjAsMjBINDBWNDBIMjBWMjBNNjAsMjBINDBWNDBINjBWMjBNNDAsNDBWNjBNMjAsNjBINDBWNjhINjBWNjAiIHN0cm9rZT0iIzc3MzBmZiIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PC9zdmc+">
+    
+    <!-- Modern CSS with optimized font loading -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" media="print" onload="this.media='all'">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧙‍♂️</text></svg>">
+    
+    <!-- Inline critical CSS with dark mode variables -->
+    <style>
+        :root {
+            --color-primary: #7730ff;
+            --color-primary-hover: #8a4dff;
+            --color-bg: #0f0f17;
+            --color-card: #1a1a2e;
+            --color-text: #f0f0f5;
+            --color-muted: #a0a0c0;
+            --color-border: #2a2a4a;
+            --color-accent: #ff30a2;
+        }
+        
+        @media (prefers-color-scheme: light) {
+            :root {
+                --color-bg: #f5f5ff;
+                --color-card: #ffffff;
+                --color-text: #1a1a2e;
+                --color-muted: #5a5a7a;
+                --color-border: #d0d0e0;
+                --color-accent: #ff30a2;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #000;
+            color: var(--color-text);
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Space background */
+        .space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .stars::before, .stars::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        
+        .stars::before {
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
+            background-size: 200px 200px;
+            animation: starsMovement 50s linear infinite;
+        }
+        
+        .stars::after {
+            background-image: 
+                radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 90px 90px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 110px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 180px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 200px 160px, #fff, rgba(0,0,0,0));
+            background-size: 250px 250px;
+            animation: starsMovement 100s linear infinite;
+        }
+        
+        @keyframes starsMovement {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+        
+        .shooting-star {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+                        0 0 0 8px rgba(255, 255, 255, 0.1),
+                        0 0 20px rgba(255, 255, 255, 1);
+            animation: shooting 15s linear infinite;
+        }
+        
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,1), transparent);
+        }
+        
+        @keyframes shooting {
+            0% {
+                transform: rotate(215deg) translateX(0);
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(215deg) translateX(-1000px);
+                opacity: 0;
+            }
+        }
+        
+        .error-container {
+            text-align: center;
+            max-width: 48rem;
+            padding: 3rem;
+            position: relative;
+            background-color: rgba(26, 26, 46, 0.8);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--color-border);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+        
+        .error-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(119, 48, 255, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            animation: rotate 60s linear infinite;
+        }
+        
+        .error-graphic {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 2rem;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNMjAsMjBINDBWNDBIMjBWMjBNNjAsMjBINDBWNDBINjBWMjBNNDAsNDBWNjBNMjAsNjBINDBWNjhINjBWNjAiIHN0cm9rZT0iIzc3MzBmZiIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8+PC9zdmc+");
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(119, 48, 255, 0.4));
+        }
+        
+        .error-code {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        .error-description {
+            font-size: 1.125rem;
+            color: var(--color-muted);
+            max-width: 36rem;
+            margin: 0 auto 2.5rem;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.75rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+            will-change: transform;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            box-shadow: 0 4px 15px -3px rgba(119, 48, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(119, 48, 255, 0.5);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary:active {
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 640px) {
+            .error-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .error-title {
+                font-size: 2rem;
+            }
+            
+            .error-description {
+                font-size: 1rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-graphic {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Reduced motion preference */
+        @media (prefers-reduced-motion) {
+            .btn, .error-graphic, .error-container::before, 
+            .stars::before, .stars::after, .shooting-star {
+                animation: none;
+                transition: none;
+            }
+        }
+        
+        /* Glow effect for MythicalDash feel */
+        .glow {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(119, 48, 255, 0.4) 0%, transparent 70%);
+            filter: blur(30px);
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        .glow-1 {
+            top: 20%;
+            left: 10%;
+            animation: float 6s ease-in-out infinite alternate;
+        }
+        
+        .glow-2 {
+            bottom: 15%;
+            right: 10%;
+            animation: float 7s ease-in-out infinite alternate-reverse;
+        }
+    </style>
+    
+    <!-- Noscript fallback -->
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap">
+        <style>
+            .error-graphic, .glow, .stars, .shooting-star { animation: none; }
+            body { background-color: var(--color-bg); }
+            .space-bg { display: none; }
+        </style>
+    </noscript>
+</head>
+
+<body>
+    <!-- Space background elements -->
+    <div class="space-bg"></div>
+    <div class="stars"></div>
+    <div class="shooting-star" style="top: 50px; left: 50%; animation-delay: 2s;"></div>
+    <div class="shooting-star" style="top: 30%; left: 80%; animation-delay: 5s;"></div>
+    <div class="shooting-star" style="top: 80%; left: 20%; animation-delay: 8s;"></div>
+    
+    <div class="error-container">
+        <!-- Glow effects -->
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        
+        <div class="error-graphic" aria-hidden="true"></div>
+        
+        <p class="error-code">404 ERROR</p>
+        <h1 class="error-title">Lost in the Cosmic Void</h1>
+        <p class="error-description">
+            The page you seek has drifted into the vast expanse of space. Perhaps it's orbiting 
+            a distant star or lost in a nebula. Let's guide you back to safety.
+        </p>
+        
+        <div class="btn-group">
+            <a href="/dashboard" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Return to Dashboard
+            </a>
+          <a href="/dashboard" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+                Go Back
+            </button>
+            <a href="/dashboard" class="btn btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+                Contact Support
+            </a>
+        </div>
+    </div>
+
+    <!-- Modern JavaScript with graceful degradation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create additional stars
+            createStars();
+            
+            // Add hover effects with proper active states
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        btn.style.transform = 'translateY(-2px)';
+                    }
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                });
+            });
+        });
+        
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            if (!starsContainer) return;
+            
+            // Create twinkling stars
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.backgroundColor = '#fff';
+                star.style.borderRadius = '50%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.opacity = Math.random();
+                star.style.animation = `twinkle ${Math.random() * 5 + 3}s infinite alternate`;
+                
+                starsContainer.appendChild(star);
+            }
+            
+            // Add CSS for twinkling animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes twinkle {
+                    0% { opacity: 0.2; }
+                    100% { opacity: ${Math.random() * 0.8 + 0.2}; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>

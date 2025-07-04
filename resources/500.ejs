@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Error | 500</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap" as="style">
+    <link rel="preload" href="../../../../../public/tailwind.css" as="style">
+    
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Space+Grotesk:wght@300..700&display=swap">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚠️</text></svg>">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../../../public/tailwind.css">
+    
+    <style>
+        :root {
+            --primary: #0a9875;
+            --primary-hover: #088c6b;
+            --bg: #0d1217;
+            --card: #161f26;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .error-graphic {
+            width: 120px;
+            height: 120px;
+            background: rgba(10, 152, 117, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .error-graphic svg {
+            width: 60px;
+            height: 60px;
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            border: 1px solid var(--text-secondary);
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    <div class="max-w-md mx-auto text-center px-6 py-12 rounded-xl bg-gradient-to-br from-[#161f26] to-[#0d171f] shadow-2xl border border-[#1e293b]">
+        <div class="error-graphic">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+        </div>
+        
+        <h1 class="text-4xl font-bold tracking-tight text-white mb-3">500 Server Error</h1>
+        <p class="text-lg text-[#94a3b8] mb-8">We encountered an unexpected problem while processing your request.</p>
+        
+        <div class="space-y-4">
+            <a href="/" class="btn-primary inline-flex items-center px-6 py-3 rounded-lg font-medium text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Return Home
+            </a>
+            
+            <a href="mailto:support@example.com" class="btn-secondary inline-flex items-center px-6 py-3 rounded-lg font-medium text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Contact Support
+            </a>
+        </div>
+        
+        <div class="mt-8 pt-6 border-t border-[#1e293b] text-sm text-[#64748b]">
+            <p>Technical details for administrators:</p>
+            <p class="mt-1 font-mono text-xs bg-[#1e293b] p-2 rounded overflow-x-auto">Error 500: Internal Server Error</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= name %></title>
+    <link rel="icon" type="image/x-icon" href="<%= app.logo %>">
+    <link rel="stylesheet" href="../public/tailwind.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nanobar@0.4.2/nanobar.min.js"></script>
+  
+    <!-- Improved font imports -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Color scheme and base styles -->
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-dark: #5b21b6;
+            --primary-light: #8b5cf6;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: #f1f5f9;
+        }
+
+        /* Animation for sidebar items */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(-10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+
+        .sidebar-item {
+            animation: fadeIn 0.3s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Delay animations for each item */
+        .sidebar-item:nth-child(1) { animation-delay: 0.1s; }
+        .sidebar-item:nth-child(2) { animation-delay: 0.2s; }
+        .sidebar-item:nth-child(3) { animation-delay: 0.3s; }
+        .sidebar-item:nth-child(4) { animation-delay: 0.4s; }
+        .sidebar-item:nth-child(5) { animation-delay: 0.5s; }
+        .sidebar-item:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Animated underline effect */
+        .animated-underline {
+            position: relative;
+            display: inline-block;
+        }
+
+        .animated-underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-light);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .animated-underline:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Active link styling */
+        .active-link {
+            position: relative;
+        }
+
+        .active-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-light);
+            transform: scaleX(1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading spinner -->
+    <div id="spinner" class="fixed top-4 right-4 z-50 hidden">
+        <div class="w-6 h-6 border-4 border-[var(--primary-light)] border-t-[var(--primary)] rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Sidebar navigation -->
+    <div class="fixed inset-y-0 left-0 w-20 md:w-64 bg-[var(--darker)] shadow-lg z-40 transition-all duration-300 ease-in-out" id="sidebar">
+        <div class="flex flex-col h-full p-4">
+            <!-- Sidebar toggle button (mobile) -->
+            <button id="sidebar-toggle" class="md:hidden absolute -right-3 top-5 bg-[var(--primary)] text-white rounded-full p-1 shadow-lg z-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+
+            <!-- Logo and app name -->
+            <div class="flex items-center justify-center md:justify-start h-16 mb-8">
+                <img src="<%= app.logo %>" alt="App Logo" class="h-10 w-10 rounded-full transition-all duration-300">
+                <span class="hidden md:block ml-3 text-xl font-bold text-[var(--primary-light)] transition-opacity duration-300"><%= name %></span>
+            </div>
+
+            <!-- Navigation links -->
+            <nav class="flex-1 space-y-2">
+                <% if (req.query.platform && req.query.platform == "account") { %>
+                    <!-- Account specific navigation would go here -->
+                <% } else { %>
+                    <% if (admin == true) { %>
+                        <!-- Dashboard link -->
+                        <a href="../dashboard" class="sidebar-item flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)]/30 transition-all group transform hover:translate-x-1 animated-underline">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-[var(--primary-light)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                            <span class="hidden md:block ml-3 transition-opacity duration-300">Go Back</span>
+                        </a>
+                        
+                        <!-- Admin Panel link -->
+                        <a href="../admin" class="sidebar-item flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)]/30 transition-all group transform hover:translate-x-1 animated-underline">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-[var(--primary-light)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span class="hidden md:block ml-3 transition-opacity duration-300">Admin Panel</span>
+                        </a>
+
+                        <!-- Nodes List link -->
+                        <a href="../nodes" class="sidebar-item flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)]/30 transition-all group transform hover:translate-x-1 animated-underline">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-[var(--primary-light)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                            </svg>
+                            <span class="hidden md:block ml-3 transition-opacity duration-300">Nodes List</span>
+                        </a>
+
+                        <!-- Images List link -->
+                        <a href="../images" class="sidebar-item flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)]/30 transition-all group transform hover:translate-x-1 animated-underline">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-[var(--primary-light)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span class="hidden md:block ml-3 transition-opacity duration-300">Images List</span>
+                        </a>
+
+                        <!--  Extra Admin link -->
+                        <a href="../theme" class="sidebar-item flex items-center p-3 rounded-lg hover:bg-[var(--primary-dark)]/30 transition-all group transform hover:translate-x-1 animated-underline">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-[var(--primary-light)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                            </svg>
+                            <span class="hidden md:block ml-3 transition-opacity duration-300">Extra Admin</span>
+                        </a>
+                    <% } %>
+                <% } %>
+            </nav>
+
+            <!-- User profile section -->
+            <div class="pb-4 sidebar-item" style="animation-delay: 0.7s;">
+                <div class="flex items-center p-2 rounded-lg hover:bg-[var(--primary-dark)]/30 cursor-pointer transition-all transform hover:translate-x-1 animated-underline">
+                    <img src="<%= user.avatar %>" alt="User Avatar" class="h-8 w-8 rounded-full transition-transform duration-300 hover:scale-110">
+                    <div class="hidden md:block ml-3 transition-opacity duration-300">
+                        <p class="text-sm font-medium"><%= user.username %></p>
+                        <p class="text-xs text-gray-400">Administrator</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript functionality -->
+    <script>
+        // Sidebar toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const mainContent = document.getElementById('main-content');
+            let sidebarExpanded = true;
+
+            // Toggle sidebar on mobile
+            sidebarToggle.addEventListener('click', function() {
+                sidebarExpanded = !sidebarExpanded;
+                
+                if (sidebarExpanded) {
+                    sidebar.classList.remove('w-20');
+                    sidebar.classList.add('w-64');
+                    mainContent.classList.remove('pl-20');
+                    mainContent.classList.add('pl-64');
+                    sidebarToggle.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    `;
+                } else {
+                    sidebar.classList.remove('w-64');
+                    sidebar.classList.add('w-20');
+                    mainContent.classList.remove('pl-64');
+                    mainContent.classList.add('pl-20');
+                    sidebarToggle.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    `;
+                }
+            });
+
+            // Initialize loading bar
+            var options = {
+                classname: 'loadingbar',
+                id: 'mynanobar'
+            };
+            
+            var nanobar = new Nanobar(options);
+            
+            // Simulate loading progress
+            function simulateLoading() {
+                var spinner = document.getElementById('spinner');
+                spinner.style.display = 'block';
+                spinner.style.opacity = '1';
+                
+                nanobar.go(10);
+                setTimeout(function() {
+                    nanobar.go(50);
+                }, 190);
+                setTimeout(function() {
+                    nanobar.go(100);
+                    spinner.style.opacity = '0';
+                    setTimeout(() => {
+                        spinner.style.display = 'none';
+                    }, 300);
+                }, 400);
+            }
+        });
+
+        // Skeleton loader functionality
+        document.addEventListener("DOMContentLoaded", function() {
+            const skeletonLoader = document.getElementById("skeleton-loader");
+            const content = document.getElementById("content");
+    
+            function showSkeletonLoader() {
+                skeletonLoader.classList.add("active");
+                content.style.display = "none";
+            }
+    
+            function hideSkeletonLoader() {
+                skeletonLoader.classList.remove("active");
+                content.style.display = "block";
+            }
+    
+            // Show loader initially, then hide after delay
+            showSkeletonLoader();
+            setTimeout(hideSkeletonLoader, 250);
+        });
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const icon = notification.querySelector('.notification-icon');
+            const messageEl = notification.querySelector('.notification-message');
+            
+            // Set appropriate icon based on notification type
+            if (type === 'success') {
+                icon.textContent = '✓';
+            } else if (type === 'error') {
+                icon.textContent = '✗';
+            } else if (type === 'warning') {
+                icon.textContent = '⚠';
+            }
+            
+            messageEl.textContent = message;
+            notification.className = `notification ${type} hidden`;
+            notification.classList.remove('hidden');
+            notification.classList.add('show');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 300);
+            }, 5000);
+        }
+
+        // Modal system
+        function openModal(title, content, buttons = []) {
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay';
+            
+            const modalContent = document.createElement('div');
+            modalContent.className = 'modal-content';
+            
+            // Modal header with title and close button
+            const modalHeader = document.createElement('div');
+            modalHeader.className = 'modal-header';
+            
+            const modalTitle = document.createElement('h3');
+            modalTitle.className = 'text-lg font-semibold';
+            modalTitle.textContent = title;
+            
+            const closeButton = document.createElement('button');
+            closeButton.className = 'close-modal';
+            closeButton.innerHTML = '&times;';
+            closeButton.onclick = () => closeModal(modalOverlay);
+            
+            modalHeader.appendChild(modalTitle);
+            modalHeader.appendChild(closeButton);
+            
+            // Modal body with content
+            const modalBody = document.createElement('div');
+            modalBody.className = 'modal-body';
+            modalBody.innerHTML = content;
+            
+            // Modal footer with action buttons
+            const modalFooter = document.createElement('div');
+            modalFooter.className = 'modal-footer';
+            
+            buttons.forEach(button => {
+                const btn = document.createElement('button');
+                btn.className = `px-4 py-2 rounded-lg transition-all ${button.primary ? 
+                    'bg-[var(--primary)] hover:bg-[var(--primary-dark)] transform hover:scale-105' : 
+                    'bg-gray-600 hover:bg-gray-700'}`;
+                btn.textContent = button.text;
+                btn.onclick = function() {
+                    if (typeof button.action === 'function') {
+                        button.action();
+                    }
+                    closeModal(modalOverlay);
+                };
+                modalFooter.appendChild(btn);
+            });
+            
+            // Assemble modal components
+            modalContent.appendChild(modalHeader);
+            modalContent.appendChild(modalBody);
+            modalContent.appendChild(modalFooter);
+            
+            modalOverlay.appendChild(modalContent);
+            document.body.appendChild(modalOverlay);
+            
+            // Animate modal in
+            setTimeout(() => {
+                modalOverlay.classList.add('active');
+            }, 10);
+            
+            // Close modal when clicking outside
+            modalOverlay.onclick = (e) => {
+                if (e.target === modalOverlay) {
+                    closeModal(modalOverlay);
+                }
+            };
+        }
+        
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        }
+    </script>
+
+    <!-- Loading bar styles -->
+    <style>
+        .loadingbar .bar {
+            background: #0a9875;
+            -webkit-box-shadow: 0px 4px 38px -15px #0a9875;
+            -moz-box-shadow: 0px 4px 38px -15px #0a9875;
+            box-shadow: 0px 4px 38px -15px #0a9875;
+            height: 1.85px;
+        }
+    </style>
+
+    <!-- Skeleton loader styles -->
+    <style>
+        #skeleton-loader {
+            display: none;
+        }
+    
+        #skeleton-loader.active {
+            display: block;
+        }
+    </style>
+
+    <!-- Notification styles -->
+    <style>
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transform: translateX(150%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: var(--secondary);
+        }
+        
+        .notification.error {
+            background-color: var(--danger);
+        }
+        
+        .notification.warning {
+            background-color: var(--warning);
+        }
+
+        .notification-icon {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+    </style>
+
+    <!-- Modal styles -->
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: var(--darker);
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--primary-dark);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Scrollbar styling */
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+    </style>
+
+    <!-- Notification element -->
+    <div id="notification" class="notification hidden">
+        <span class="notification-icon">✓</span>
+        <span class="notification-message"></span>
+    </div>
+</body>
+</html>

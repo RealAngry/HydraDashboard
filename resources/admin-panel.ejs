@@ -1,0 +1,450 @@
+<%- include('./components/header') %>
+
+<main class="container mx-auto px-4 py-8">
+    <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+        <h1 class="text-2xl font-bold text-white mb-4">Admin Panel</h1>
+        <p class="text-gray-300 mb-6">System administration and diagnostics</p>
+
+        <!-- Panel Connection Settings -->
+        <div class="bg-gray-700 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4">HydraPanel Connection</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-gray-300 mb-2">Current Panel URL:</p>
+                    <div class="bg-gray-800 rounded px-3 py-2 text-white font-mono break-all"><%= panelUrl %></div>
+                </div>
+                <div>
+                    <p class="text-gray-300 mb-2">Current API Key:</p>
+                    <div class="bg-gray-800 rounded px-3 py-2 text-white font-mono"><%= panelKey %></div>
+                </div>
+            </div>
+
+            <form id="updatePanelForm" class="mt-6">
+                <h3 class="text-lg font-semibold text-white mb-4">Update Panel Connection</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="panelUrl" class="block text-gray-300 mb-2">New Panel URL:</label>
+                        <input type="text" id="panelUrl" name="panelUrl" class="bg-gray-800 text-white rounded px-3 py-2 w-full" placeholder="https://your-panel-url.com">
+                    </div>
+                    <div>
+                        <label for="panelKey" class="block text-gray-300 mb-2">New API Key:</label>
+                        <input type="text" id="panelKey" name="panelKey" class="bg-gray-800 text-white rounded px-3 py-2 w-full" placeholder="hpk_your_api_key">
+                    </div>
+                </div>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Update Connection
+                </button>
+            </form>
+        </div>
+
+        <!-- Diagnostic Tools -->
+        <div class="bg-gray-700 rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-white mb-4">Diagnostic Tools</h2>
+            
+            <div class="mb-6">
+                <button id="runDiagnostics" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Run Diagnostics
+                </button>
+                <button id="clearResults" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">
+                    Clear Results
+                </button>
+            </div>
+            
+            <div id="diagnosticResults" class="hidden">
+                <h3 class="text-lg font-semibold text-white mb-2">Results</h3>
+                <div id="resultsContainer" class="bg-gray-800 rounded p-4 font-mono text-sm text-white overflow-auto max-h-96">
+                    <!-- Results will be displayed here -->
+                </div>
+                
+                <div id="recommendations" class="mt-4 hidden">
+                    <h3 class="text-lg font-semibold text-white mb-2">Recommendations</h3>
+                    <ul id="recommendationsList" class="list-disc pl-6 text-gray-300">
+                        <!-- Recommendations will be displayed here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Diagnostics Section -->
+        <div class="mt-8 rounded-lg p-6 bg-gray-800/80 border border-gray-700/50 hover:shadow-xl transition-all duration-300">
+            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                User Troubleshooter
+            </h3>
+            <p class="text-gray-400 text-sm mb-4">Diagnose issues with specific users and servers</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-gray-700/50 p-4 rounded-lg border border-gray-600/50">
+                    <h4 class="text-white font-medium mb-2">User Lookup</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">User ID</label>
+                            <div class="flex">
+                                <input id="user-id-input" type="text" placeholder="Enter user ID" class="bg-gray-900 text-white p-2 rounded-l flex-1 border border-gray-700">
+                                <button id="check-user-btn" class="bg-indigo-600 text-white py-2 px-4 rounded-r hover:bg-indigo-700 transition-colors">
+                                    Check User
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">Enter a user ID to check their status and resources</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Discord ID</label>
+                            <div class="flex">
+                                <input id="discord-id-input" type="text" placeholder="Enter Discord ID" class="bg-gray-900 text-white p-2 rounded-l flex-1 border border-gray-700">
+                                <button id="find-by-discord-btn" class="bg-indigo-600 text-white py-2 px-4 rounded-r hover:bg-indigo-700 transition-colors">
+                                    Find User
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">Find a user by their Discord ID</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-700/50 p-4 rounded-lg border border-gray-600/50">
+                    <h4 class="text-white font-medium mb-2">Email Lookup</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                            <div class="flex">
+                                <input id="email-input" type="email" placeholder="Enter email address" class="bg-gray-900 text-white p-2 rounded-l flex-1 border border-gray-700">
+                                <button id="find-by-email-btn" class="bg-indigo-600 text-white py-2 px-4 rounded-r hover:bg-indigo-700 transition-colors">
+                                    Find User
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">Find a user by their email address</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Known Issue User</label>
+                            <button id="check-problem-user-btn" data-userid="1249216562745970711" class="w-full bg-red-600/70 text-white py-2 px-4 rounded hover:bg-red-700/70 transition-colors">
+                                Check Known Problem User
+                            </button>
+                            <p class="text-xs text-gray-400 mt-1">Run diagnostics on user with Discord ID 1249216562745970711</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results container -->
+            <div id="user-results" class="bg-gray-900/70 rounded-lg border border-gray-700/80 p-4 hidden">
+                <div class="flex justify-between items-start border-b border-gray-700 pb-3 mb-3">
+                    <h4 class="text-white font-medium" id="user-results-title">User Diagnostics Results</h4>
+                    <button id="close-results-btn" class="text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="user-results-content" class="space-y-4">
+                    <!-- Results will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Update Panel Connection Form
+    document.getElementById('updatePanelForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const panelUrl = document.getElementById('panelUrl').value.trim();
+        const panelKey = document.getElementById('panelKey').value.trim();
+        
+        if (!panelUrl || !panelKey) {
+            alert('Both Panel URL and API Key are required');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/update-panel-config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ panelUrl, panelKey })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                alert(result.message);
+                // Reload the page to show updated values
+                window.location.reload();
+            } else {
+                alert(`Error: ${result.message}`);
+            }
+        } catch (error) {
+            alert(`Failed to update: ${error.message}`);
+        }
+    });
+    
+    // Run Diagnostics
+    document.getElementById('runDiagnostics').addEventListener('click', async function() {
+        const resultsContainer = document.getElementById('resultsContainer');
+        const diagnosticResults = document.getElementById('diagnosticResults');
+        const recommendations = document.getElementById('recommendations');
+        const recommendationsList = document.getElementById('recommendationsList');
+        
+        // Show loading
+        diagnosticResults.classList.remove('hidden');
+        resultsContainer.innerHTML = 'Running diagnostics, please wait...';
+        recommendations.classList.add('hidden');
+        
+        try {
+            const response = await fetch('/diagnostics');
+            const data = await response.json();
+            
+            // Format the JSON prettily with syntax highlighting
+            const formattedJson = JSON.stringify(data, null, 2)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"([^"]+)":/g, '<span style="color: #89CFF0;">"$1"</span>:')
+                .replace(/"([^"]+)"/g, '<span style="color: #98FB98;">"$1"</span>')
+                .replace(/true/g, '<span style="color: #FFA500;">true</span>')
+                .replace(/false/g, '<span style="color: #FFA500;">false</span>')
+                .replace(/null/g, '<span style="color: #FF6347;">null</span>');
+            
+            resultsContainer.innerHTML = `<pre>${formattedJson}</pre>`;
+            
+            // Show recommendations if any
+            if (data.recommendations && data.recommendations.length > 0) {
+                recommendations.classList.remove('hidden');
+                recommendationsList.innerHTML = '';
+                
+                data.recommendations.forEach(rec => {
+                    const li = document.createElement('li');
+                    li.textContent = rec;
+                    recommendationsList.appendChild(li);
+                });
+            }
+        } catch (error) {
+            resultsContainer.innerHTML = `Error running diagnostics: ${error.message}`;
+        }
+    });
+    
+    // Clear Results
+    document.getElementById('clearResults').addEventListener('click', function() {
+        document.getElementById('diagnosticResults').classList.add('hidden');
+    });
+
+    // User diagnostic functions
+    document.addEventListener('DOMContentLoaded', function() {
+        // User lookup
+        document.getElementById('check-user-btn').addEventListener('click', function() {
+            const userId = document.getElementById('user-id-input').value.trim();
+            if (userId) {
+                runUserDiagnostics(userId);
+            }
+        });
+        
+        // Discord ID lookup
+        document.getElementById('find-by-discord-btn').addEventListener('click', function() {
+            const discordId = document.getElementById('discord-id-input').value.trim();
+            if (discordId) {
+                // First need to find user ID from Discord ID
+                findUserByDiscordId(discordId);
+            }
+        });
+        
+        // Email lookup
+        document.getElementById('find-by-email-btn').addEventListener('click', function() {
+            const email = document.getElementById('email-input').value.trim();
+            if (email) {
+                findUserByEmail(email);
+            }
+        });
+        
+        // Known problem user
+        document.getElementById('check-problem-user-btn').addEventListener('click', function() {
+            const userId = this.getAttribute('data-userid');
+            runUserDiagnostics(userId);
+        });
+        
+        // Close results
+        document.getElementById('close-results-btn').addEventListener('click', function() {
+            document.getElementById('user-results').classList.add('hidden');
+        });
+        
+        // Helper functions
+        async function runUserDiagnostics(userId) {
+            try {
+                showLoading();
+                const response = await fetch(`/user-diagnostics/${userId}`);
+                const data = await response.json();
+                displayUserResults(data);
+            } catch (error) {
+                displayError('Error running diagnostics: ' + error.message);
+            }
+        }
+        
+        async function findUserByDiscordId(discordId) {
+            try {
+                showLoading();
+                // This endpoint would need to be implemented separately
+                const response = await fetch(`/api/find-user-by-discord/${discordId}`);
+                const data = await response.json();
+                
+                if (data.success && data.userId) {
+                    runUserDiagnostics(data.userId);
+                } else {
+                    displayError(`No user found with Discord ID: ${discordId}`);
+                }
+            } catch (error) {
+                displayError('Error finding user: ' + error.message);
+            }
+        }
+        
+        async function findUserByEmail(email) {
+            try {
+                showLoading();
+                // This endpoint would need to be implemented separately
+                const response = await fetch(`/api/find-user-by-email/${encodeURIComponent(email)}`);
+                const data = await response.json();
+                
+                if (data.success && data.userId) {
+                    runUserDiagnostics(data.userId);
+                } else {
+                    displayError(`No user found with email: ${email}`);
+                }
+            } catch (error) {
+                displayError('Error finding user: ' + error.message);
+            }
+        }
+        
+        function showLoading() {
+            const resultsEl = document.getElementById('user-results');
+            const contentEl = document.getElementById('user-results-content');
+            
+            resultsEl.classList.remove('hidden');
+            document.getElementById('user-results-title').textContent = 'Running Diagnostics...';
+            contentEl.innerHTML = `
+                <div class="flex justify-center py-6">
+                    <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
+                </div>
+                <p class="text-center text-gray-400">Please wait while we analyze user data...</p>
+            `;
+        }
+        
+        function displayError(message) {
+            const resultsEl = document.getElementById('user-results');
+            const contentEl = document.getElementById('user-results-content');
+            
+            resultsEl.classList.remove('hidden');
+            document.getElementById('user-results-title').textContent = 'Error';
+            contentEl.innerHTML = `
+                <div class="bg-red-900/30 border border-red-800 rounded p-3 text-red-200">
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+        
+        function displayUserResults(data) {
+            const resultsEl = document.getElementById('user-results');
+            const contentEl = document.getElementById('user-results-content');
+            
+            resultsEl.classList.remove('hidden');
+            document.getElementById('user-results-title').textContent = 'User Diagnostics Results';
+            
+            let html = '';
+            
+            // User info
+            html += `
+                <div class="bg-gray-800 rounded p-3 border border-gray-700">
+                    <h5 class="text-white font-medium mb-2">User Information</h5>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div class="text-gray-400">User ID:</div>
+                        <div class="text-white">${data.userId}</div>
+                        
+                        <div class="text-gray-400">Found in Database:</div>
+                        <div class="text-white">${data.userFound ? 'Yes' : 'No'}</div>
+                        
+                        ${data.userEmail ? `
+                            <div class="text-gray-400">Email:</div>
+                            <div class="text-white">${data.userEmail}</div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Resources
+            if (data.resources) {
+                html += `
+                    <div class="bg-gray-800 rounded p-3 border border-gray-700">
+                        <h5 class="text-white font-medium mb-2">Resources</h5>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div class="text-gray-400">CPU:</div>
+                            <div class="text-white">${data.resources.cpu || 0}%</div>
+                            
+                            <div class="text-gray-400">Memory:</div>
+                            <div class="text-white">${data.resources.memory || 0} MB</div>
+                            
+                            <div class="text-gray-400">Disk:</div>
+                            <div class="text-white">${data.resources.disk || 0} MB</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Servers
+            if (data.servers && data.servers.length > 0) {
+                html += `
+                    <div class="bg-gray-800 rounded p-3 border border-gray-700">
+                        <h5 class="text-white font-medium mb-2">Servers (${data.servers.length})</h5>
+                        <div class="space-y-2">
+                            ${data.servers.map(server => `
+                                <div class="bg-gray-900 p-2 rounded border border-gray-700 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-white font-medium">${server.name}</span>
+                                        <span class="${server.status === 'running' ? 'text-green-400' : 'text-red-400'}">${server.status}</span>
+                                    </div>
+                                    <div class="text-gray-400 text-xs">ID: ${server.id}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (data.userFound) {
+                html += `
+                    <div class="bg-gray-800 rounded p-3 border border-gray-700">
+                        <h5 class="text-white font-medium mb-2">Servers</h5>
+                        <p class="text-gray-400 text-sm">No servers found for this user.</p>
+                    </div>
+                `;
+            }
+            
+            // Issues
+            if (data.issues && data.issues.length > 0) {
+                html += `
+                    <div class="bg-red-900/30 rounded p-3 border border-red-800">
+                        <h5 class="text-white font-medium mb-2">Issues Detected (${data.issues.length})</h5>
+                        <ul class="list-disc list-inside text-sm text-red-200 space-y-1">
+                            ${data.issues.map(issue => `<li>${issue}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            // Recommendations
+            if (data.recommendations && data.recommendations.length > 0) {
+                html += `
+                    <div class="bg-blue-900/30 rounded p-3 border border-blue-800">
+                        <h5 class="text-white font-medium mb-2">Recommendations</h5>
+                        <ul class="list-disc list-inside text-sm text-blue-200 space-y-1">
+                            ${data.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            contentEl.innerHTML = html;
+        }
+    });
+</script>
+
+<%- include('./components/footer') %> 

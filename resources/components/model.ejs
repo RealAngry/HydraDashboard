@@ -1,0 +1,110 @@
+<div x-data="{ open: false }" 
+     x-show="open" 
+     @keydown.escape.window="open = false"
+     @toggle-modal.window="open = !open"
+     x-transition:enter="transition ease-out duration-100 transform"
+     x-transition:enter-start="opacity-0 scale-90"
+     x-transition:enter-end="opacity-100 scale-100"
+     x-transition:leave="transition ease-in duration-100 transform"
+     x-transition:leave-start="opacity-100 scale-100"
+     x-transition:leave-end="opacity-0 scale-90"     
+     class="fixed inset-0 backdrop-blur z-50 justify-center items-center"
+     style="display: none;" id="createServerModal">
+
+  <div class="bg-[#121b21] p-8 mt-12 rounded-2xl max-w-2xl mx-auto">
+    <div class="text-white mb-4">
+      <h2 class="font-semibold text-xl">Create a new server</h2>
+    </div>
+    <form>
+        <label class="block mb-2 text-white font-medium text-sm">
+          Server Name:
+          <span class="cursor-pointer inline-flex items-center">            
+          </span>
+        </label>
+      <input type="text" id="InputName" class="w-full border border-white/5 bg-[#162027]/30 focus:ring-[#0a9875] focus:border-transparent transition font-medium pl-4 py-3 text-sm text-zinc-400 placeholder:text-zinc-500 tracking-tight rounded-2xl mb-4" placeholder="Server name" x-model="aiName">
+
+      <div class="flex space-x-4 mb-4">
+        <div>
+          <label class="block mb-2 text-white font-medium text-sm">Memory (GB):</label>
+          <input type="number" id="InputRAM" class="w-full border border-white/5 bg-[#162027]/30 focus:ring-[#0a9875] focus:border-transparent transition font-medium pl-4 py-3 text-sm text-zinc-400 placeholder:text-zinc-500 tracking-tight rounded-2xl mb-4" placeholder="2">
+        </div>
+        <div>
+          <label class="block mb-2 text-white font-medium text-sm">Storage (GB):</label>
+          <input type="number" id="InputDisk" class="w-full border border-white/5 bg-[#162027]/30 focus:ring-[#0a9875] focus:border-transparent transition font-medium pl-4 py-3 text-sm text-zinc-400 placeholder:text-zinc-500 tracking-tight rounded-2xl mb-4" placeholder="10">
+        </div>
+        <div>
+          <label class="block mb-2 text-white font-medium text-sm">CPU Cores:</label>
+          <input type="number" id="InputCPU" class="w-full border border-white/5 bg-[#162027]/30 focus:ring-[#0a9875] focus:border-transparent transition font-medium pl-4 py-3 text-sm text-zinc-400 placeholder:text-zinc-500 tracking-tight rounded-2xl mb-4" placeholder="1">
+        </div>
+      </div>      
+
+      <label class="block mb-2 text-white font-medium text-sm">Location:</label>
+      <div class="grid grid-cols-2 gap-4 mb-4">
+      </div>
+      
+      <label class="block mb-2 text-white font-medium text-sm">Node:</label>
+       <select name="node" id="node" class="rounded-lg focus:ring-transparent focus:border-transparent text-white text-sm mt-2 w-full pr-10 items-center transition justify-left gap-16 hover:bg-white/5 px-4 py-2 flex border-white/5 bg-neutral-900 placeholder:text-white/20 border border-black/10">
+                        
+                          <option value="">No Node</option>
+                    
+                      </select>      
+     <label class="block mb-2 text-white font-medium text-sm">Software:</label>
+                  <select name="node" id="node" class="rounded-lg focus:ring-transparent focus:border-transparent text-white text-sm mt-2 w-full pr-10 items-center transition justify-left gap-16 hover:bg-white/5 px-4 py-2 flex border-white/5 bg-neutral-900 placeholder:text-white/20 border border-black/10">
+                   
+                        <option value="">No Image</option>
+                      
+
+                                     </select>                   
+
+      <div x-data="{ open: false }">
+        <button @mouseenter="open = true" @mouseleave="open = false" type="button" onclick="submitNew()" class="bg-[#0a9875] text-white font-semibold py-2 px-4 rounded-2xl mt-4">
+          Create Server
+        </button>
+
+        <button type="button" onclick="toggleModal()" class="bg-transparent text-zinc-400 transition hover:text-zinc-200 font-medium py-2 px-4 rounded-2xl mt-4">
+          Close
+        </button>
+        
+        <div x-show="open" x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 transform scale-90"
+          x-transition:enter-end="opacity-100 transform scale-100"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 transform scale-100"
+          x-transition:leave-end="opacity-0 transform scale-90"
+          class="absolute rounded-2xl bg-[#141d23] shadow border-t border-white/10 px-4 py-2.5 text-sm text-white font-medium tracking-tight mt-3"
+          style="display: none;">
+         By clicking this, you are agreeing to the <%= name %> User Agreement and Minecraft EULA.
+       </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+/* Modal Content Container */
+.modal-content {
+  max-height: 80vh; /* 80% of the viewport height */
+  overflow-y: auto; /* Enables scrolling */
+}
+
+@media (max-height: 500px) {
+  .modal-content {
+    max-height: 70vh; /* Smaller max-height for very small screens */
+  }
+}
+
+/* Ensuring the whole modal is always visible and centered */
+#createServerModal {
+  display: flex;
+  align-items: center; /* This centers the modal vertically */
+  justify-content: center; /* This centers the modal horizontally */
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card-selected {
+  border: 1px solid #0a9875; /* Highlight for selected cards */
+}
+</style>

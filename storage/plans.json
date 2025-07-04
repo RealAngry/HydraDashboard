@@ -1,0 +1,37 @@
+{
+    "PLAN": {
+        "BASIC": {
+            "id": 1,
+            "name": "Basic",
+            "price": 0,
+            "resources": {
+                "cpu": 100,
+                "ram": 1024,
+                "disk": 10,
+                "server": 2
+            }
+        },
+        "PREMIUM": {
+            "id": 2,
+            "name": "Premium",
+            "price": 2000,
+            "resources": {
+                "cpu": 200,
+                "ram": 4096,
+                "disk": 20,
+                "server": 3
+            }
+        },
+        "PRO": {
+            "id": 3,
+            "name": "Pro",
+            "price": 4000,
+            "resources": {
+                "cpu": 400,
+                "ram": 8192,
+                "disk": 30,
+                "server": 4
+            }
+        }
+    }
+}

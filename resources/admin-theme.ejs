@@ -1,0 +1,656 @@
+<%- include('./components/wrapper') %>
+
+<main class="flex-1 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+  <!-- Animated Background Elements -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full filter blur-3xl animate-float1"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/5 rounded-full filter blur-3xl animate-float2"></div>
+    <div class="absolute top-1/3 right-1/4 w-80 h-80 bg-teal-500/5 rounded-full filter blur-3xl animate-float3"></div>
+  </div>
+
+  <div class="relative z-10 py-8 animate-fadeIn">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header with Animated Title -->
+      <div class="mb-10 text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient bg-300%">
+          Admin Control Panel
+        </h1>
+        <p class="mt-3 max-w-2xl mx-auto text-lg text-gray-400 animate-fadeIn delay-300">
+          Manage users, resources, and system settings
+        </p>
+      </div>
+
+      <!-- Notification System -->
+      <div class="notifications-container space-y-4 mb-8">
+        <% if (req.query.success == "COMPLETE") { %>
+        <div class="notification-success bg-gradient-to-r from-green-900/80 to-green-800/80 border-l-4 border-green-400 rounded-xl shadow-lg p-4 animate-slideInRight">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-green-100">Action Completed</h3>
+              <p class="text-sm text-green-200">The changes to the user have been made.</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex h-8 w-8 bg-green-900/20 text-green-400 hover:bg-green-800/30 transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+          </div>
+        </div>
+        <% } %>
+        
+        <!-- Other notification templates... -->
+      </div>
+
+      <!-- Main Dashboard Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- User Management Card -->
+        <div class="dashboard-card bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden hover:shadow-blue-500/20 transition-all duration-500 hover:-translate-y-1">
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPgo8cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSI2IiBmaWxsPSIjMWExYTFhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMNiA2WiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9IiMxZDFkMWQiPjwvcGF0aD4KPC9zdmc+')] opacity-10"></div>
+          <div class="relative p-6">
+            <div class="flex items-center mb-6">
+              <div class="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 mr-4">
+                <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold text-white">User Management</h2>
+            </div>
+            
+            <div class="space-y-6">
+              <!-- Ban User Section -->
+              <div class="space-y-3">
+                <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Ban User</h3>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="ban-email" class="form-input" placeholder="user@example.com" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Reason</label>
+                  <input type="text" id="ban-reason" class="form-input" placeholder="Reason for ban">
+                </div>
+                <button onclick="banUser()" class="form-button bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                  </svg>
+                  Ban User
+                </button>
+              </div>
+              
+              <!-- Unban User Section -->
+              <div class="space-y-3 pt-6 border-t border-gray-700/50">
+                <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Unban User</h3>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="unban-email" class="form-input" placeholder="user@example.com" required>
+                </div>
+                <button onclick="unbanUser()" class="form-button bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Unban User
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coins Management Card -->
+        <div class="dashboard-card bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden hover:shadow-purple-500/20 transition-all duration-500 hover:-translate-y-1">
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPgo8cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSI2IiBmaWxsPSIjMWExYTFhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMNiA2WiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9IiMxZDFkMWQiPjwvcGF0aD4KPC9zdmc+')] opacity-10"></div>
+          <div class="relative p-6">
+            <div class="flex items-center mb-6">
+              <div class="p-3 rounded-lg bg-purple-500/10 border border-purple-500/20 mr-4">
+                <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold text-white">Coins Management</h2>
+            </div>
+            
+            <div class="space-y-6">
+              <!-- Add Coins Section -->
+              <div class="space-y-3">
+                <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Add Coins</h3>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="add-coins-email" class="form-input" placeholder="user@example.com" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Amount</label>
+                  <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"></span>
+                    <input type="number" id="add-coins-amount" class="form-input pl-8" placeholder="100" min="0" step="0.01" required>
+                  </div>
+                </div>
+                <button onclick="addCoins()" class="form-button bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Coins
+                </button>
+              </div>
+              
+              <!-- Set Coins Section -->
+              <div class="space-y-3 pt-6 border-t border-gray-700/50">
+                <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Set Coins</h3>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="set-coins-email" class="form-input" placeholder="user@example.com" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Amount</label>
+                  <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"></span>
+                    <input type="number" id="set-coins-amount" class="form-input pl-8" placeholder="100" min="0" step="0.01" required>
+                  </div>
+                </div>
+                <button onclick="setCoins()" class="form-button bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Set Coins
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resources Management Card -->
+        <div class="dashboard-card bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden hover:shadow-teal-500/20 transition-all duration-500 hover:-translate-y-1">
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPgo8cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSI2IiBmaWxsPSIjMWExYTFhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMNiA2WiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9IiMxZDFkMWQiPjwvcGF0aD4KPC9zdmc+')] opacity-10"></div>
+          <div class="relative p-6">
+            <div class="flex items-center mb-6">
+              <div class="p-3 rounded-lg bg-teal-500/10 border border-teal-500/20 mr-4">
+                <svg class="w-6 h-6 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold text-white">Resources Management</h2>
+            </div>
+            
+            <div class="space-y-6">
+              <!-- Add Resources Section -->
+              <div class="space-y-3">
+                <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Add Resources</h3>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="add-resources-email" class="form-input" placeholder="user@example.com" required>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="form-group">
+                    <label class="form-label">CPU Cores</label>
+                    <div class="relative">
+                      <input type="number" id="add-resources-cpu" class="form-input" placeholder="0.5" min="0" step="0.1">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">RAM (GB)</label>
+                    <div class="relative">
+                      <input type="number" id="add-resources-ram" class="form-input" placeholder="1" min="0">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Disk (GB)</label>
+                    <div class="relative">
+                      <input type="number" id="add-resources-disk" class="form-input" placeholder="10" min="0">
+                    </div>
+                  </div>
+                </div>
+                <button onclick="addResources()" class="form-button bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                  Add Resources
+                </button>
+              </div>
+              
+              <!-- Set Resources Section -->
+              <div class="space-y-3 pt-6 border-t border-gray-700/50">
+                <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider">Set Resources</h3>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="set-resources-email" class="form-input" placeholder="user@example.com" required>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="form-group">
+                    <label class="form-label">CPU Cores</label>
+                    <div class="relative">
+                      <input type="number" id="set-resources-cpu" class="form-input" placeholder="1" min="0" step="0.1">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">RAM (GB)</label>
+                    <div class="relative">
+                      <input type="number" id="set-resources-ram" class="form-input" placeholder="2" min="0">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Disk (GB)</label>
+                    <div class="relative">
+                      <input type="number" id="set-resources-disk" class="form-input" placeholder="20" min="0">
+                    </div>
+                  </div>
+                </div>
+                <button onclick="setResources()" class="form-button bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  Set Resources
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Tools Card -->
+        <div class="dashboard-card bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 rounded-2xl shadow-2xl overflow-hidden hover:shadow-orange-500/20 transition-all duration-500 hover:-translate-y-1">
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjYiPgo8cmVjdCB3aWR0aD0iNiIgaGVpZ2h0PSI2IiBmaWxsPSIjMWExYTFhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMNiA2WiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9IiMxZDFkMWQiPjwvcGF0aD4KPC9zdmc+')] opacity-10"></div>
+          <div class="relative p-6">
+            <div class="flex items-center mb-6">
+              <div class="p-3 rounded-lg bg-orange-500/10 border border-orange-500/20 mr-4">
+                <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h2 class="text-xl font-bold text-white">System Tools</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 gap-4">
+              <!-- Scan Images -->
+              <a href="/scanimages" class="system-tool-button group">
+                <div class="system-tool-icon bg-blue-500/10 border-blue-500/20 text-blue-400 group-hover:bg-blue-500/20">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <h3 class="system-tool-title">Scan Images</h3>
+                  <p class="system-tool-description">Update available images from API</p>
+                </div>
+                <div class="ml-auto">
+                  <svg class="w-5 h-5 text-gray-500 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+              
+              <!-- Scan Nodes -->
+              <a href="/scannodes" class="system-tool-button group">
+                <div class="system-tool-icon bg-green-500/10 border-green-500/20 text-green-400 group-hover:bg-green-500/20">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <h3 class="system-tool-title">Scan Nodes</h3>
+                  <p class="system-tool-description">Update available nodes from API</p>
+                </div>
+                <div class="ml-auto">
+                  <svg class="w-5 h-5 text-gray-500 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+              
+              <!-- Server Status -->
+              <div class="system-tool-button group cursor-default">
+                <div class="system-tool-icon bg-purple-500/10 border-purple-500/20 text-purple-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" />
+                  </svg>
+                </div>
+                <div class="ml-4">
+                  <h3 class="system-tool-title">Server Status</h3>
+                  <p class="system-tool-description">All systems operational</p>
+                </div>
+                <div class="ml-auto px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 text-xs font-medium">
+                  Online
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Floating Action Button -->
+<div class="fixed bottom-6 right-6 z-50">
+  <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full shadow-lg hover:shadow-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500/50">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+  </button>
+</div>
+
+<script>
+  // Enhanced functions with validation and toast notifications
+  function showToast(type, message) {
+    const toast = document.createElement('div');
+    toast.className = `toast-notification fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg text-white font-medium flex items-center animate-toastIn ${type === 'success' ? 'bg-green-600' : 'bg-red-600'}`;
+    toast.innerHTML = `
+      <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        ${type === 'success' ? 
+          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />' : 
+          '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />'}
+      </svg>
+      ${message}
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.classList.remove('animate-toastIn');
+      toast.classList.add('animate-toastOut');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+
+  async function addCoins() {
+    const email = document.getElementById("add-coins-email").value.trim();
+    const amount = document.getElementById("add-coins-amount").value.trim();
+    
+    if (!email || !amount) {
+      showToast('error', 'Please fill in all required fields');
+      return;
+    }
+    
+    if (isNaN(amount) || parseFloat(amount) <= 0) {
+      showToast('error', 'Please enter a valid positive number for amount');
+      return;
+    }
+    
+    try {
+      const response = await fetch(`/addcoins?amount=${encodeURIComponent(amount)}&email=${encodeURIComponent(email)}`);
+      if (response.ok) {
+        showToast('success', 'Coins added successfully');
+      } else {
+        showToast('error', 'Failed to add coins');
+      }
+    } catch (error) {
+      showToast('error', 'Network error occurred');
+    }
+  }
+
+  // Other functions with similar enhancements...
+  async function setCoins() {
+    const email = document.getElementById("set-coins-email").value.trim();
+    const amount = document.getElementById("set-coins-amount").value.trim();
+    
+    if (!email || !amount) {
+      showToast('error', 'Please fill in all required fields');
+      return;
+    }
+    
+    if (isNaN(amount) || parseFloat(amount) < 0) {
+      showToast('error', 'Please enter a valid non-negative number for amount');
+      return;
+    }
+    
+    document.location.href = `/setcoins?amount=${encodeURIComponent(amount)}&email=${encodeURIComponent(email)}`;
+  }
+
+  async function addResources() {
+    const email = document.getElementById("add-resources-email").value.trim();
+    const cpu = document.getElementById("add-resources-cpu").value.trim();
+    const ram = document.getElementById("add-resources-ram").value.trim();
+    const disk = document.getElementById("add-resources-disk").value.trim();
+    
+    if (!email) {
+      showToast('error', 'Email is required');
+      return;
+    }
+    
+    if (!cpu && !ram && !disk) {
+      showToast('error', 'At least one resource (CPU, RAM, or Disk) must be specified');
+      return;
+    }
+    
+    document.location.href = `/addresources?email=${encodeURIComponent(email)}&cpu=${encodeURIComponent(cpu)}&ram=${encodeURIComponent(ram)}&disk=${encodeURIComponent(disk)}`;
+  }
+
+  async function setResources() {
+    const email = document.getElementById("set-resources-email").value.trim();
+    const cpu = document.getElementById("set-resources-cpu").value.trim();
+    const ram = document.getElementById("set-resources-ram").value.trim();
+    const disk = document.getElementById("set-resources-disk").value.trim();
+    
+    if (!email) {
+      showToast('error', 'Email is required');
+      return;
+    }
+    
+    if (!cpu && !ram && !disk) {
+      showToast('error', 'At least one resource (CPU, RAM, or Disk) must be specified');
+      return;
+    }
+    
+    document.location.href = `/setresources?email=${encodeURIComponent(email)}&cpu=${encodeURIComponent(cpu)}&ram=${encodeURIComponent(ram)}&disk=${encodeURIComponent(disk)}`;
+  }
+
+  async function banUser() {
+    const email = document.getElementById("ban-email").value.trim();
+    const reason = document.getElementById("ban-reason").value.trim() || "No reason provided";
+    
+    if (!email) {
+      showToast('error', 'Email is required');
+      return;
+    }
+    
+    document.location.href = `/ban?email=${encodeURIComponent(email)}&reason=${encodeURIComponent(reason)}`;
+  }
+
+  async function unbanUser() {
+    const email = document.getElementById("unban-email").value.trim();
+    
+    if (!email) {
+      showToast('error', 'Email is required');
+      return;
+    }
+    
+    document.location.href = `/unban?email=${encodeURIComponent(email)}`;
+  }
+</script>
+
+<%- include('./components/footer') %>
+
+<!-- Custom Styles -->
+<style>
+  /* Animations */
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  .animate-slideInRight {
+    animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  
+  .animate-gradient {
+    animation: gradientBG 8s ease infinite;
+    background-size: 300% 300%;
+  }
+  
+  .animate-float1 {
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  .animate-float2 {
+    animation: float 10s ease-in-out infinite reverse;
+  }
+  
+  .animate-float3 {
+    animation: float 12s ease-in-out infinite 2s;
+  }
+  
+  .animate-toastIn {
+    animation: toastIn 0.3s ease-out forwards;
+  }
+  
+  .animate-toastOut {
+    animation: toastOut 0.3s ease-in forwards;
+  }
+  
+  /* Keyframes */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+  }
+  
+  @keyframes toastIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes toastOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+  
+  /* Custom Components */
+  .dashboard-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    transform: rotate(30deg);
+    opacity: 0;
+    transition: opacity 0.6s;
+  }
+  
+  .dashboard-card:hover::before {
+    opacity: 1;
+  }
+  
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #d1d5db;
+  }
+  
+  .form-input {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    background-color: rgba(31, 41, 55, 0.5);
+    border: 1px solid rgba(55, 65, 81, 0.5);
+    border-radius: 0.5rem;
+    color: #f3f4f6;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    background-color: rgba(31, 41, 55, 0.7);
+  }
+  
+  .form-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .form-button:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .system-tool-button {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(31, 41, 55, 0.3);
+    border-radius: 0.75rem;
+    transition: all 0.2s;
+  }
+  
+  .system-tool-button:hover {
+    background-color: rgba(55, 65, 81, 0.3);
+    transform: translateX(4px);
+  }
+  
+  .system-tool-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid;
+    transition: all 0.2s;
+  }
+  
+  .system-tool-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #f3f4f6;
+  }
+  
+  .system-tool-description {
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+</style>

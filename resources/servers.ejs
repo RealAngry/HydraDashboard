@@ -1,0 +1,515 @@
+          <body class="bg-gradient-to-br from-[#0b0f1a] to-[#10181e] min-h-screen relative overflow-x-hidden" style="font-family: 'Space Grotesk', sans-serif;">
+              <!-- Animated Star Background -->
+              <canvas id="starCanvas" class="absolute inset-0 -z-10 w-full h-full"></canvas>
+
+              <!-- Nebula Overlay -->
+              <div class="absolute inset-0 -z-20 opacity-20">
+                  <div class="absolute top-0 right-0 w-96 h-96 rounded-full bg-purple-600/30 blur-[100px]"></div>
+                  <div class="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-blue-600/30 blur-[100px]"></div>
+              </div>
+
+              <%- include('./components/wrapper') %>
+
+              <main class="flex-grow container mx-auto px-4 py-8 max-w-7xl">
+                  <!-- Header Section -->
+                  <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full pb-6 gap-4">
+                      <div class="flex flex-col">
+                          <h1 class="text-3xl md:text-4xl text-white font-bold tracking-tight" style="font-family: 'Cabin', sans-serif;">
+                              <span class="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-orange-600">Your Servers</span>
+                          </h1>
+                          <p class="text-gray-400/90 text-sm md:text-base mt-1">Monitor and manage all your game servers in one place</p>
+                      </div>
+
+                      <!-- Breadcrumb Navigation -->
+                      <nav class="inline-flex py-2 px-4 rounded-xl bg-white/5 backdrop-blur-md border border-white/10 transition-all hover:bg-white/10">
+                          <ol class="flex items-center space-x-2 text-sm">
+                              <li>
+                                  <a href="/" class="flex items-center text-zinc-300 hover:text-white transition-colors">
+                                      <svg class="size-4 mr-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                          <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                          <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                      </svg>
+                                      <span>Home</span>
+                                  </a>
+                              </li>
+                              <li class="text-white flex items-center">
+                                  <svg class="size-4 mx-1 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                      <path d="M9 6l6 6l-6 6"></path>
+                                  </svg>
+                                  <span>Servers</span>
+                              </li>
+                          </ol>
+                      </nav>
+                  </div>
+
+                  <!-- Action Bar -->
+                  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                      <div class="relative w-full sm:w-64">
+                          <input 
+                              type="text" 
+                              id="serverSearch" 
+                              placeholder="Search servers..." 
+                              class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all pr-10"
+                          >
+                          <button id="clearSearch" class="absolute right-3 top-2.5 text-gray-400 hover:text-white transition-colors hidden">
+                              <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                  <path d="M18 6l-12 12"></path>
+                                  <path d="M6 6l12 12"></path>
+                              </svg>
+                          </button>
+                          <svg class="absolute right-3 top-2.5 size-5 text-gray-400 pointer-events-none" id="searchIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <path d="M3 10a7 7 0 1 0 14 0a7 7 0 0 0 -14 0"></path>
+                              <path d="M21 21l-6 -6"></path>
+                          </svg>
+                      </div>
+                      <div class="flex items-center gap-3 w-full sm:w-auto">
+                          <div class="flex bg-white/5 rounded-lg border border-white/10 overflow-hidden">
+                              <button 
+                                  id="gridViewBtn" 
+                                  class="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all bg-orange-500/20 text-orange-400"
+                                  title="Grid View"
+                              >
+                                  <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                      <path d="M4 4h4v4h-4z"></path>
+                                      <path d="M14 4h4v4h-4z"></path>
+                                      <path d="M4 14h4v4h-4z"></path>
+                                      <path d="M14 14h4v4h-4z"></path>
+                                  </svg>
+                                  <span>Grid</span>
+                              </button>
+                              <button 
+                                  id="listViewBtn" 
+                                  class="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all text-gray-400 hover:text-white hover:bg-white/5"
+                                  title="List View"
+                              >
+                                  <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                      <path d="M4 6h16"></path>
+                                      <path d="M4 12h16"></path>
+                                      <path d="M4 18h16"></path>
+                                  </svg>
+                                  <span>List</span>
+                              </button>
+                          </div>
+                          <a href="/create-server" class="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold shadow-lg hover:shadow-orange-500/20 transition-all transform hover:scale-[1.02]">
+                              <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                  <path d="M12 5l0 14"></path>
+                                  <path d="M5 12l14 0"></path>
+                              </svg>
+                              <span>New Server</span>
+                          </a>
+                      </div>
+                  </div>
+
+                  <!-- Server Grid View -->
+                  <div id="gridView" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                      <% if (servers.length === 0) { %>
+                          <!-- Empty State -->
+                          <div class="col-span-full flex flex-col items-center justify-center py-16 px-6 text-center rounded-2xl bg-white/5 border border-dashed border-white/10 backdrop-blur-md">
+                              <div class="p-4 bg-white/10 rounded-full mb-4">
+                                  <svg class="size-10 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                      <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                      <path d="M9 10l0 .01"></path>
+                                      <path d="M15 10l0 .01"></path>
+                                      <path d="M9.5 15a3.5 3.5 0 0 0 5 0"></path>
+                                  </svg>
+                              </div>
+                              <h3 class="text-xl font-semibold text-white mb-2">No servers found</h3>
+                              <p class="text-gray-400 mb-6 max-w-md">You don't have any servers yet. Create your first server to get started.</p>
+                              <a href="/create-server" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-lg text-sm font-semibold shadow-lg hover:shadow-orange-500/20 transition-all transform hover:scale-[1.02]">
+                                  Create First Server
+                              </a>
+                          </div>
+                      <% } else { %>
+                          <% for (let server of servers) { %>
+                              <!-- Server Card -->
+                              <div class="server-card group relative bg-gradient-to-br from-white/5 to-white/[0.03] rounded-xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10 hover:border-white/20 backdrop-blur-md overflow-hidden" data-name="<%= server.Name.toLowerCase() %>">
+                                  <!-- Status Indicator -->
+                                  <div class="absolute top-4 right-4">
+                                      <div class="relative">
+                                          <span class="flex h-2.5 w-2.5">
+                                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full <%= server.Status === 'Running' ? 'bg-green-500' : 'bg-red-500' %> opacity-75"></span>
+                                              <span class="relative inline-flex rounded-full h-2.5 w-2.5 <%= server.Status === 'Running' ? 'bg-green-500' : 'bg-red-500' %>"></span>
+                                          </span>
+                                      </div>
+                                  </div>
+
+                                  <!-- Server Icon -->
+                                  <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-500/20 to-orange-600/30 flex items-center justify-center mb-4 border border-white/10">
+                                      <svg class="size-6 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                          <path d="M4 5a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1v-14z"></path>
+                                          <path d="M4 8h16"></path>
+                                          <path d="M8 4v4"></path>
+                                      </svg>
+                                  </div>
+
+                                  <!-- Server Info -->
+                                  <h4 class="text-lg font-semibold text-white mb-1 truncate"><%= server.Name %></h4>
+                                  <p class="text-xs font-medium mb-3 <%= server.Status === 'Running' ? 'text-green-400' : 'text-red-400' %>">
+                                      <%= server.Status %> • Last updated just now
+                                  </p>
+
+                                  <!-- Resource Stats -->
+                                  <div class="space-y-2.5 mb-4">
+                                      <!-- Memory Usage -->
+                                      <div>
+                                          <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                              <span>Memory</span>
+                                              <span><%= server.Memory %> MB</span>
+                                          </div>
+                                          <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                                              <div class="h-full bg-blue-500 rounded-full" style="width: <%= Math.min(100, Math.random() * 30 + 70) %>%"></div>
+                                          </div>
+                                      </div>
+
+                                      <!-- CPU Usage -->
+                                      <div>
+                                          <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                              <span>CPU</span>
+                                              <span><%= server.Cpu %> Cores</span>
+                                          </div>
+                                          <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                                              <div class="h-full bg-purple-500 rounded-full" style="width: <%= Math.min(100, Math.random() * 40 + 40) %>%"></div>
+                                          </div>
+                                      </div>
+
+                                      <!-- Disk Usage -->
+                                      <div>
+                                          <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                              <span>Disk</span>
+                                              <span><%= server.Disk %> GB</span>
+                                          </div>
+                                          <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                                              <div class="h-full bg-orange-500 rounded-full" style="width: <%= Math.min(100, Math.random() * 20 + 30) %>%"></div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                  <!-- Action Buttons -->
+                                  <div class="flex gap-2">
+                                      <a href="<%= panel %>/instance/<%= server.Id %>" class="flex-1 bg-white/5 hover:bg-white/10 text-white px-3 py-2 rounded-lg text-sm font-medium text-center transition-colors border border-white/10 hover:border-white/20">
+                                          Manage
+                                      </a>
+                                      <button class="bg-white/5 hover:bg-white/10 text-white p-2 rounded-lg transition-colors border border-white/10 hover:border-white/20">
+                                          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                              <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                              <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                              <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                          </svg>
+                                      </button>
+                                  </div>
+
+                                  <!-- Hover Effect -->
+                                  <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                              </div>
+                          <% } %>
+                      <% } %>
+                  </div>
+
+                  <!-- Server List View (Hidden by default) -->
+                  <div id="listView" class="hidden bg-white/5 rounded-xl border border-white/10 backdrop-blur-md overflow-hidden">
+                      <table class="w-full">
+                          <thead class="border-b border-white/10">
+                              <tr class="text-left text-gray-400 text-sm">
+                                  <th class="p-4 font-medium">Server</th>
+                                  <th class="p-4 font-medium">Status</th>
+                                  <th class="p-4 font-medium">Resources</th>
+                                  <th class="p-4 font-medium">Last Updated</th>
+                                  <th class="p-4 font-medium text-right">Actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <% if (servers.length === 0) { %>
+                                  <tr>
+                                      <td colspan="5" class="p-8 text-center text-gray-400">
+                                          No servers found. Create your first server to get started.
+                                      </td>
+                                  </tr>
+                              <% } else { %>
+                                  <% for (let server of servers) { %>
+                                      <tr class="server-card border-b border-white/10 hover:bg-white/5 transition-colors" data-name="<%= server.Name.toLowerCase() %>">
+                                          <td class="p-4">
+                                              <div class="flex items-center gap-3">
+                                                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500/20 to-orange-600/30 flex items-center justify-center border border-white/10">
+                                                      <svg class="size-5 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                          <path d="M4 5a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1v-14z"></path>
+                                                          <path d="M4 8h16"></path>
+                                                          <path d="M8 4v4"></path>
+                                                      </svg>
+                                                  </div>
+                                                  <div>
+                                                      <h4 class="text-white font-medium"><%= server.Name %></h4>
+                                                      <p class="text-xs text-gray-400">ID: <%= server.Id %></p>
+                                                  </div>
+                                              </div>
+                                          </td>
+                                          <td class="p-4">
+                                              <div class="flex items-center gap-2">
+                                                  <span class="flex h-2 w-2">
+                                                      <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full <%= server.Status === 'Running' ? 'bg-green-500' : 'bg-red-500' %> opacity-75"></span>
+                                                      <span class="relative inline-flex rounded-full h-2 w-2 <%= server.Status === 'Running' ? 'bg-green-500' : 'bg-red-500' %>"></span>
+                                                  </span>
+                                                  <span class="text-sm <%= server.Status === 'Running' ? 'text-green-400' : 'text-red-400' %>"><%= server.Status %></span>
+                                              </div>
+                                          </td>
+                                          <td class="p-4">
+                                              <div class="flex flex-col gap-1">
+                                                  <div class="flex items-center gap-2 text-xs">
+                                                      <span class="w-16 text-gray-400">RAM:</span>
+                                                      <span class="text-white"><%= server.Memory %> MB</span>
+                                                  </div>
+                                                  <div class="flex items-center gap-2 text-xs">
+                                                      <span class="w-16 text-gray-400">CPU:</span>
+                                                      <span class="text-white"><%= server.Cpu %> Cores</span>
+                                                  </div>
+                                                  <div class="flex items-center gap-2 text-xs">
+                                                      <span class="w-16 text-gray-400">Disk:</span>
+                                                      <span class="text-white"><%= server.Disk %> GB</span>
+                                                  </div>
+                                              </div>
+                                          </td>
+                                          <td class="p-4 text-sm text-gray-400">
+                                              Just now
+                                          </td>
+                                          <td class="p-4 text-right">
+                                              <div class="flex justify-end gap-2">
+                                                  <a href="<%= panel %>/instance/<%= server.Id %>" class="bg-white/5 hover:bg-white/10 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border border-white/10 hover:border-white/20">
+                                                      Manage
+                                                  </a>
+                                                  <button class="bg-white/5 hover:bg-white/10 text-white p-1.5 rounded-lg transition-colors border border-white/10 hover:border-white/20">
+                                                      <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                          <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                          <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                          <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                                      </svg>
+                                                  </button>
+                                              </div>
+                                          </td>
+                                      </tr>
+                                  <% } %>
+                              <% } %>
+                          </tbody>
+                      </table>
+                  </div>
+              </main>
+
+              <%- include('./components/footer') %>
+
+              <!-- Enhanced Starfield Animation -->
+              <script>
+                  const canvas = document.getElementById('starCanvas');
+                  const ctx = canvas.getContext('2d');
+
+                  // Responsive canvas sizing
+                  function resizeCanvas() {
+                      canvas.width = window.innerWidth;
+                      canvas.height = document.body.scrollHeight;
+                  }
+                  window.addEventListener('resize', resizeCanvas);
+                  resizeCanvas();
+
+                  // Create stars with varying properties
+                  const stars = Array.from({ length: 200 }, () => ({
+                      x: Math.random() * canvas.width,
+                      y: Math.random() * canvas.height,
+                      radius: Math.random() * 1.5 + 0.5,
+                      speedY: Math.random() * 0.5 + 0.1,
+                      speedX: (Math.random() - 0.5) * 0.3,
+                      opacity: Math.random() * 0.7 + 0.3,
+                      flickerSpeed: Math.random() * 0.05 + 0.01,
+                      baseOpacity: Math.random() * 0.5 + 0.3
+                  }));
+
+                  // Shooting stars
+                  const shootingStars = Array.from({ length: 3 }, () => ({
+                      x: Math.random() * canvas.width,
+                      y: Math.random() * canvas.height * 0.5,
+                      speed: Math.random() * 10 + 5,
+                      length: Math.random() * 50 + 30,
+                      opacity: 0,
+                      lastTime: 0,
+                      delay: Math.random() * 20000 + 10000 // 10-30 seconds
+                  }));
+
+                  let lastTime = 0;
+                  const fps = 60;
+                  const fpsInterval = 1000 / fps;
+
+                  function animateStars(timestamp) {
+                      if (!lastTime) lastTime = timestamp;
+                      const elapsed = timestamp - lastTime;
+
+                      if (elapsed > fpsInterval) {
+                          lastTime = timestamp - (elapsed % fpsInterval);
+
+                          // Clear canvas with gradient
+                          const gradient = ctx.createRadialGradient(
+                              canvas.width / 2, canvas.height / 2, 100,
+                              canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 2
+                          );
+                          gradient.addColorStop(0, '#0b0f1a');
+                          gradient.addColorStop(1, '#10181e');
+                          ctx.fillStyle = gradient;
+                          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                          // Draw normal stars
+                          stars.forEach(star => {
+                              // Flickering effect
+                              star.opacity = star.baseOpacity + Math.sin(timestamp * star.flickerSpeed) * 0.2;
+
+                              ctx.globalAlpha = Math.max(0, Math.min(1, star.opacity));
+                              ctx.fillStyle = 'white';
+                              ctx.beginPath();
+                              ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                              ctx.fill();
+
+                              // Move stars
+                              star.y += star.speedY;
+                              star.x += star.speedX;
+
+                              // Reset position if out of bounds
+                              if (star.y > canvas.height) {
+                                  star.y = 0;
+                                  star.x = Math.random() * canvas.width;
+                              }
+                              if (star.x > canvas.width) star.x = 0;
+                              if (star.x < 0) star.x = canvas.width;
+                          });
+
+                          // Draw shooting stars
+                          shootingStars.forEach(star => {
+                              if (star.opacity <= 0 && timestamp - star.lastTime > star.delay) {
+                                  // Reset shooting star
+                                  star.x = Math.random() * canvas.width;
+                                  star.y = -10;
+                                  star.opacity = 0.8;
+                                  star.lastTime = timestamp;
+                              }
+
+                              if (star.opacity > 0) {
+                                  ctx.strokeStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                                  ctx.lineWidth = 1.5;
+                                  ctx.beginPath();
+                                  ctx.moveTo(star.x, star.y);
+                                  ctx.lineTo(star.x - star.length * 0.7, star.y + star.length * 0.7);
+                                  ctx.stroke();
+
+                                  // Add glow
+                                  ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.3})`;
+                                  ctx.beginPath();
+                                  ctx.arc(star.x, star.y, 3, 0, Math.PI * 2);
+                                  ctx.fill();
+
+                                  // Move shooting star
+                                  star.x += star.speed * 0.7;
+                                  star.y += star.speed;
+                                  star.opacity -= 0.01;
+
+                                  if (star.y > canvas.height || star.x > canvas.width) {
+                                      star.opacity = 0;
+                                  }
+                              }
+                          });
+                      }
+
+                      requestAnimationFrame(animateStars);
+                  }
+
+                  // Start animation
+                  requestAnimationFrame(animateStars);
+              </script>
+
+              <!-- View Toggle and Search Functionality -->
+              <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      // View Toggle
+                      const gridViewBtn = document.getElementById('gridViewBtn');
+                      const listViewBtn = document.getElementById('listViewBtn');
+                      const gridView = document.getElementById('gridView');
+                      const listView = document.getElementById('listView');
+
+                      // Set initial view (grid view)
+                      let currentView = 'grid';
+
+                      // Toggle between views
+                      gridViewBtn.addEventListener('click', function() {
+                          if (currentView !== 'grid') {
+                              gridView.classList.remove('hidden');
+                              listView.classList.add('hidden');
+                              gridViewBtn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-white/5');
+                              gridViewBtn.classList.add('bg-orange-500/20', 'text-orange-400');
+                              listViewBtn.classList.remove('bg-orange-500/20', 'text-orange-400');
+                              listViewBtn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-white/5');
+                              currentView = 'grid';
+                          }
+                      });
+
+                      listViewBtn.addEventListener('click', function() {
+                          if (currentView !== 'list') {
+                              gridView.classList.add('hidden');
+                              listView.classList.remove('hidden');
+                              listViewBtn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-white/5');
+                              listViewBtn.classList.add('bg-orange-500/20', 'text-orange-400');
+                              gridViewBtn.classList.remove('bg-orange-500/20', 'text-orange-400');
+                              gridViewBtn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-white/5');
+                              currentView = 'list';
+                          }
+                      });
+
+                      // Search Functionality
+                      const searchInput = document.getElementById('serverSearch');
+                      const clearSearchBtn = document.getElementById('clearSearch');
+                      const searchIcon = document.getElementById('searchIcon');
+                      const serverCards = document.querySelectorAll('.server-card');
+
+                      searchInput.addEventListener('input', function() {
+                          const searchTerm = this.value.toLowerCase();
+
+                          if (searchTerm.length > 0) {
+                              clearSearchBtn.classList.remove('hidden');
+                              searchIcon.classList.add('hidden');
+                          } else {
+                              clearSearchBtn.classList.add('hidden');
+                              searchIcon.classList.remove('hidden');
+                          }
+
+                          serverCards.forEach(card => {
+                              const serverName = card.getAttribute('data-name');
+                              if (serverName.includes(searchTerm)) {
+                                  card.style.display = '';
+                              } else {
+                                  card.style.display = 'none';
+                              }
+                          });
+                      });
+
+                      clearSearchBtn.addEventListener('click', function() {
+                          searchInput.value = '';
+                          clearSearchBtn.classList.add('hidden');
+                          searchIcon.classList.remove('hidden');
+
+                          serverCards.forEach(card => {
+                              card.style.display = '';
+                          });
+                      });
+
+                      // Store view preference in localStorage
+                      function storeViewPreference(view) {
+                          localStorage.setItem('serverViewPreference', view);
+                      }
+
+                      function getViewPreference() {
+                          return localStorage.getItem('serverViewPreference') || 'grid';
+                      }
+
+                      // Initialize with user's preferred view
+                      const preferredView = getViewPreference();
+                      if (preferredView === 'list') {
+                          listViewBtn.click();
+                      }
+
+                      // Update preference when view changes
+                      gridViewBtn.addEventListener('click', () => storeViewPreference('grid'));
+                      listViewBtn.addEventListener('click', () => storeViewPreference('list'));
+                  });
+              </script>
+          </body>

@@ -1,0 +1,121 @@
+[
+  {
+    "Image": "ghcr.io/ma4z-sys/yolks:java",
+    "Cmd": "",
+    "Env": [
+      "START=java -Xms128M -XX:MaxRAMPercentage=95.0 -Dterminal.jline=false -Dterminal.ansi=true -jar server.jar"
+    ],
+    "Scripts": {
+      "Install": [
+        {
+          "Uri": "https://download.getbukkit.org/spigot/spigot-{{Version}}.jar",
+          "Path": "server.jar"
+        },
+        {
+          "Uri": "https://raw.githubusercontent.com/hydren-dev/images_v2/main/spigotmc/server.properties",
+          "Path": "server.properties"
+        }
+      ]
+    },
+    "Name": "Minecraft Java: SpigotMC",
+    "Description": "SpigotMC is a high-performance, open-source server software for Minecraft, designed to enhance and optimize the game's multiplayer experience. It offers extensive configuration options, a vibrant plugin ecosystem, and active community support, making it a popular choice for server administrators seeking to improve gameplay and server performance.",
+    "Author": "info@skyport.dev",
+    "AuthorName": "Skyport Labs",
+    "Meta": {
+      "Version": "Skyport Images v2"
+    },
+    "Id": "357780dd-c97a-4aec-aec2-b87cbe7f2649",
+    "Variables": {
+      "Version": {
+        "type": "text",
+        "default": "1.21",
+        "required": true
+      }
+    }
+  },
+  {
+    "Image": "ghcr.io/ma4z-sys/yolks:minecraft_java_21",
+    "Cmd": "",
+    "Env": [],
+    "Scripts": {
+      "Install": [
+        {
+          "Uri": "https://api.papermc.io/v2/projects/paper/versions/{{Version}}/builds/{{Build}}/downloads/paper-{{Version}}-{{Build}}.jar",
+          "Path": "server.jar"
+        },
+        {
+          "Uri": "https://raw.githubusercontent.com/hydren-dev/images_v2/main/spigotmc/server.properties",
+          "Path": "server.properties"
+        }
+      ]
+    },
+    "Name": "Minecraft Java: PaperMC",
+    "Description": "PaperMC is an optimized, high-performance fork of SpigotMC for Minecraft servers. It aims to improve performance and stability by offering additional features, enhanced configuration options, and bug fixes. Known for its robust plugin compatibility and active development community, PaperMC is a preferred choice for server administrators looking to enhance their Minecraft multiplayer experience.",
+    "Author": "info@hydren.us.kg",
+    "AuthorName": "HydrenLLC",
+    "Meta": {
+      "Version": "Hydren Images"
+    },
+    "Id": "b6e2c9af-9c44-444c-a624-f1cc52bb6e15",
+    "Variables": {
+      "Version": {
+        "type": "text",
+        "default": "1.21.4",
+        "required": true
+      },
+      "Build": {
+        "type": "text",
+        "default": "72",
+        "required": true
+      }
+    }
+  },
+  {
+    "Image": "ghcr.io/ma4z-sys/yolks:python",
+    "Cmd": "",
+    "Env": [
+      "START=pip install -r requirements.txt",
+      "START2=python app.py"
+    ],
+    "Scripts": {
+      "Install": [
+        {
+          "Uri": "https://raw.githubusercontent.com/hydren-dev/images_v2/main/python/requirements.txt",
+          "Path": "requirements.txt"
+        }
+      ]
+    },
+    "Name": "Generic: Python",
+    "Description": "Python is a versatile programming language known for its simplicity and readability. It excels in various applications such as web development, data analysis, artificial intelligence, and scientific computing. Python's extensive standard library and third-party packages make it easy to develop powerful and scalable applications quickly. With its clean syntax and strong community support, Python is a popular choice among developers for building everything from web apps to machine learning models.",
+    "Author": "info@skyport.dev",
+    "AuthorName": "Skyport Labs",
+    "Meta": {
+      "Version": "Skyport Images v2"
+    },
+    "Id": "e30ff155-f82e-496f-a72d-f6a1db7420d7"
+  },
+  {
+    "Image": "ghcr.io/ma4z-sys/yolks:nodejs",
+    "Cmd": "",
+    "Env": [
+      "START=npm install",
+      "START2=npm run start"
+    ],
+    "Scripts": {
+      "Install": [
+        {
+          "Uri": "https://raw.githubusercontent.com/hydren-dev/images_v2/main/nodejs/package.json",
+          "Path": "package.json"
+        }
+      ]
+    },
+    "Name": "Generic: Node.js",
+    "Description": "Node.js is a runtime environment that enables JavaScript code to run outside of web browsers, known for its efficiency in building scalable network applications and backend APIs. It utilizes an event-driven, non-blocking I/O model and boasts a vast ecosystem of packages (npm), making it ideal for modern web development across platforms.",
+    "Author": "info@skyport.dev",
+    "AuthorName": "Skyport Labs",
+    "Meta": {
+      "Version": "Skyport Images v2"
+    },
+    "Id": "74ea690f-c677-4b8a-b959-32977e329422"
+  }
+]

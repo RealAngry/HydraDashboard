@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Credentials | <%= name %> Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary: #fb923c;
+      --primary-hover: #ea580c;
+      --bg: #10181e;
+      --card-bg: #1a232b;
+      --text-primary: #ffffff;
+      --text-secondary: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    .loadingbar .bar {
+      background: var(--primary);
+      height: 2px;
+      box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .password-container {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .password-blur {
+      filter: blur(5px);
+      transition: filter 0.3s ease;
+      user-select: none;
+    }
+
+    .password-blur:hover {
+      filter: none;
+    }
+
+    .copy-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+    }
+
+    .copy-notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .icon-hover {
+      transition: all 0.3s ease;
+    }
+
+    .icon-hover:hover {
+      transform: scale(1.1);
+      color: var(--primary);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .input-field {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .input-field:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .flex-col-mobile {
+        flex-direction: column;
+      }
+
+      .w-full-mobile {
+        width: 100%;
+      }
+
+      .text-center-mobile {
+        text-align: center;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#10181e] font-sans" style="font-family: 'Space Grotesk', sans-serif;">
+  <%- include('./components/wrapper') %>
+    <%- include('./components/header') %>
+
+  <!-- Loading Bar -->
+  <script src="https://cdn.jsdelivr.net/npm/nanobar@0.4.2/nanobar.min.js"></script>
+  <script>
+    var options = {
+      classname: 'loadingbar',
+      id: 'loadingbar'
+    };
+    var nanobar = new Nanobar(options);
+
+    function simulateLoading() {
+      nanobar.go(30);
+      setTimeout(() => nanobar.go(70), 200);
+      setTimeout(() => nanobar.go(100), 400);
+    }
+
+    document.addEventListener('DOMContentLoaded', simulateLoading);
+  </script>
+
+  <!-- Copy Notification -->
+  <div id="copyNotification" class="copy-notification">
+    Copied to clipboard!
+  </div>
+
+
+                <!-- Profile card -->
+                <div class="bg-[#1e293b] rounded-xl shadow-xl overflow-hidden border border-[#334155]/50 hover:border-[#0ea5e9]/30 transition-all duration-300">
+                  <!-- Profile header with glass effect -->
+                  <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#0ea5e9]/10 to-[#0f172a] backdrop-blur-sm"></div>
+                    <div class="relative p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 z-10">
+                      <!-- Avatar with status indicator -->
+                      <div class="relative flex-shrink-0">
+                        <div class="absolute -inset-1 rounded-xl bg-[#0ea5e9] opacity-20 blur-md"></div>
+                        <img class="h-24 w-24 sm:h-32 sm:w-32 rounded-xl ring-4 ring-[#1e293b] relative z-10 object-cover" 
+                             src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>?size=512" 
+                             alt="User avatar"
+                             onerror="this.src='https://cdn.discordapp.com/embed/avatars/<%= user.discriminator % 5 %>.png'">
+                        <div class="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-[#10b981] border-4 border-[#1e293b] z-20"></div>
+                      </div>
+
+                      <!-- User info section -->
+                      <div class="flex-1 text-center sm:text-left space-y-2">
+                        <div>
+                          <h1 class="text-2xl sm:text-3xl font-bold text-white">
+                            <%= user.global_name || user.username %>
+                          </h1>
+                          <p class="text-[#94a3b8] font-mono text-sm">@<%= user.username %></p>
+                        </div>
+
+                        <!-- Join date with icon -->
+                        <div class="flex items-center justify-center sm:justify-start space-x-2 text-[#94a3b8] text-sm">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span>Joined <%= new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                        </div>
+                      </div>
+
+                      <!-- Action button -->
+                      <div class="flex-shrink-0 mt-4 sm:mt-0">
+                        <button class="flex items-center space-x-2 bg-[#0ea5e9] hover:bg-[#38bdf8] text-white px-4 py-2.5 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-[#0ea5e9]/20">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                          </svg>
+                          <span>Refresh</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- User details grid -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-0.5 bg-[#334155]/30 p-0.5">
+                    <!-- User ID card -->
+                    <div class="bg-[#1e293b] p-5 hover:bg-[#0f172a] transition-colors duration-200">
+                      <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 p-2.5 rounded-lg bg-[#0ea5e9]/10 text-[#0ea5e9]">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 class="text-sm font-semibold text-[#e2e8f0] uppercase tracking-wider mb-1">User ID</h3>
+                          <div class="flex items-center space-x-2">
+                            <div class="bg-[#0f172a] rounded px-3 py-2 font-mono text-sm text-[#94a3b8] break-all flex-1">
+                              <%= user.id %>
+                            </div>
+                            <button data-copy="<%= user.id %>" class="text-[#0ea5e9] hover:text-[#38bdf8] transition-colors p-2 rounded-lg hover:bg-[#0f172a]">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Email card -->
+                    <div class="bg-[#1e293b] p-5 hover:bg-[#0f172a] transition-colors duration-200">
+                      <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 p-2.5 rounded-lg bg-[#0ea5e9]/10 text-[#0ea5e9]">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 class="text-sm font-semibold text-[#e2e8f0] uppercase tracking-wider mb-1">Email Address</h3>
+                          <div class="flex items-center space-x-2">
+                            <div class="bg-[#0f172a] rounded px-3 py-2 text-sm text-[#94a3b8] break-all flex-1">
+                              <%= user.email || 'Not verified' %>
+                            </div>
+                            <% if(user.email) { %>
+                              <button data-copy="<%= user.email %>" class="text-[#0ea5e9] hover:text-[#38bdf8] transition-colors p-2 rounded-lg hover:bg-[#0f172a]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                              </button>
+                            <% } %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Language card -->
+                    <div class="bg-[#1e293b] p-5 hover:bg-[#0f172a] transition-colors duration-200">
+                      <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 p-2.5 rounded-lg bg-[#0ea5e9]/10 text-[#0ea5e9]">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7 2a1 1 0 011 1v1h3a1 1 0 110 2H9.578a18.87 18.87 0 01-1.724 4.78c.29.354.596.696.914 1.026a1 1 0 11-1.44 1.389c-.188-.196-.373-.396-.554-.6a19.098 19.098 0 01-3.107 3.567 1 1 0 01-1.334-1.49 17.087 17.087 0 003.13-3.733 18.992 18.992 0 01-1.487-2.494 1 1 0 111.79-.89c.234.47.489.928.764 1.372.417-.934.752-1.913.997-2.927H3a1 1 0 110-2h3V3a1 1 0 011-1zm6 6a1 1 0 01.894.553l2.991 5.982a.829.829 0 01.02.037l.99 1.98a1 1 0 11-1.79.895L15.383 16h-4.764l-.724 1.447a1 1 0 11-1.788-.894l.99-1.98.02-.038 2.99-5.982A1 1 0 0113 8z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 class="text-sm font-semibold text-[#e2e8f0] uppercase tracking-wider mb-1">Language</h3>
+                          <div class="flex items-center space-x-2">
+                            <span class="bg-[#0f172a] rounded px-3 py-2 text-sm text-[#94a3b8]">English (US)</span>
+                            <button class="text-[#0ea5e9] hover:text-[#38bdf8] transition-colors p-2 rounded-lg hover:bg-[#0f172a]">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Servers card -->
+                    <div class="bg-[#1e293b] p-5 hover:bg-[#0f172a] transition-colors duration-200">
+                      <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 p-2.5 rounded-lg bg-[#0ea5e9]/10 text-[#0ea5e9]">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 class="text-sm font-semibold text-[#e2e8f0] uppercase tracking-wider mb-1">Servers Slots</h3>
+                          <div class="flex items-center space-x-2">
+                            <span class="bg-[#0f172a] rounded px-3 py-2 text-sm text-[#94a3b8]"><%= max.server %></span>
+                            <button class="text-[#0ea5e9] hover:text-[#38bdf8] transition-colors p-2 rounded-lg hover:bg-[#0f172a]">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Additional actions footer -->
+                  <div class="bg-[#0f172a] px-6 py-4 border-t border-[#334155] flex justify-between items-center">
+                    <div class="text-sm text-[#64748b]">
+                      Last updated: <%= new Date().toLocaleString() %>
+                    </div>
+                    <button class="text-[#94a3b8] hover:text-[#0ea5e9] text-sm font-medium transition-colors flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      Account Settings
+                    </button>
+                  </div>
+
+  <!-- Footer -->
+  <%- include('./components/footer') %>
+
+     <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            // Enhanced clipboard functionality
+            const copyButtons = document.querySelectorAll('[data-copy]');
+            copyButtons.forEach(button => {
+              button.addEventListener('click', function() {
+                const textToCopy = this.getAttribute('data-copy');
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                  // Create and show tooltip
+                  const tooltip = document.createElement('div');
+                  tooltip.className = 'absolute z-50 px-3 py-1 text-sm text-white bg-gray-800 rounded-lg shadow-lg';
+                  tooltip.textContent = 'Copied!';
+
+                  // Position tooltip
+                  const rect = this.getBoundingClientRect();
+                  tooltip.style.top = `${rect.top - 35}px`;
+                  tooltip.style.left = `${rect.left + rect.width/2 - 30}px`;
+
+                  document.body.appendChild(tooltip);
+
+                  // Remove tooltip after 2 seconds
+                  setTimeout(() => {
+                    tooltip.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                    setTimeout(() => tooltip.remove(), 300);
+                  }, 2000);
+                }).catch(err => {
+                  console.error('Failed to copy: ', err);
+                });
+              });
+            });
+          });
+        </script>
+
+        <%- include('./components/footer') %>
+      </div>
+    </body>

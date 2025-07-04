@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minecraft Hosting Terms | Premium Game Servers</title>
+    <link href="/public/tailwind.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+      .gradient-text {
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hover-scale {
+        transition: transform 0.3s ease;
+      }
+      .hover-scale:hover {
+        transform: scale(1.02);
+      }
+      .section-fade {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .section-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: #3b82f6;
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body style="font-family: 'Inter'" class="bg-gray-900 text-gray-100 min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-10 overflow-hidden opacity-20">
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-gray-900 animate-pulse" style="animation-duration: 15s;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 fixed w-full z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <span class="text-2xl font-bold gradient-text">MineHost</span>
+            </div>
+            <div class="hidden md:block">
+              <div class="ml-10 flex items-baseline space-x-4">
+                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-white">Home</a>
+                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Pricing</a>
+                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Features</a>
+                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white">Support</a>
+                <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-blue-400 hover:text-blue-300">Terms</a>
+              </div>
+            </div>
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-4 flex items-center md:ml-6">
+              <a href="../panel" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-md text-sm font-medium text-white hover:from-blue-500 hover:to-purple-500 transition-all duration-300 shadow-lg hover:shadow-blue-500/20">
+                Client Area
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 animate__animated animate__fadeIn">
+        <span class="gradient-text">Terms of Service</span>
+      </h1>
+      <p class="max-w-3xl mx-auto text-xl text-gray-300 animate__animated animate__fadeIn animate__delay-1s">
+        Our commitment to providing the best Minecraft hosting experience
+      </p>
+      <div class="mt-8 animate__animated animate__fadeIn animate__delay-2s">
+        <div class="inline-flex rounded-md shadow">
+          <a href="#terms" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
+            Read Terms
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <!-- Terms Sections -->
+      <section id="terms" class="space-y-12">
+        <!-- Section 1 -->
+        <div class="section-fade bg-gray-800/50 hover-scale backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-lg">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-blue-500/10 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div class="ml-6">
+              <h2 class="text-2xl font-bold text-white mb-4">1. Service Agreement</h2>
+              <div class="text-gray-300 space-y-4">
+                <p>By using our Minecraft hosting services, you agree to comply with all terms outlined in this document. We reserve the right to modify these terms at any time.</p>
+                <p>Service availability is not guaranteed and may be subject to interruptions for maintenance or unforeseen circumstances.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="section-fade bg-gray-800/50 hover-scale backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-lg">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-purple-500/10 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <div class="ml-6">
+              <h2 class="text-2xl font-bold text-white mb-4">2. Acceptable Use</h2>
+              <div class="text-gray-300 space-y-4">
+                <p>You agree not to use our services for:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                  <li>Any illegal activities or content</li>
+                  <li>Hosting abusive or harassing content</li>
+                  <li>Distributing malware or engaging in hacking activities</li>
+                  <li>Overloading our infrastructure with excessive resource usage</li>
+                  <li>Violating Mojang's EULA or other game terms</li>
+                </ul>
+                <p>Violations may result in immediate suspension or termination of your service without refund.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="section-fade bg-gray-800/50 hover-scale backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-lg">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-green-500/10 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+            </div>
+            <div class="ml-6">
+              <h2 class="text-2xl font-bold text-white mb-4">3. Payments & Refunds</h2>
+              <div class="text-gray-300 space-y-4">
+                <p>All services are billed in advance on a recurring basis. You are responsible for ensuring payment methods are up to date.</p>
+                <p>Refunds are available within 7 days of initial purchase if you are unsatisfied with our service. No refunds will be provided for violations of our terms.</p>
+                <p>Chargebacks will result in immediate termination of all services and a permanent ban from our platform.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="section-fade bg-gray-800/50 hover-scale backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-lg">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-yellow-500/10 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+            </div>
+            <div class="ml-6">
+              <h2 class="text-2xl font-bold text-white mb-4">4. Resource Usage</h2>
+              <div class="text-gray-300 space-y-4">
+                <p>Each plan includes specific resource allocations. Excessive usage may result in:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                  <li>Automatic throttling of your server</li>
+                  <li>Requests to upgrade your plan</li>
+                  <li>Suspension if resource abuse continues</li>
+                </ul>
+                <p>We monitor CPU, RAM, and disk usage to ensure fair distribution across all customers.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="section-fade bg-gray-800/50 hover-scale backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-lg">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 bg-red-500/10 p-3 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div class="ml-6">
+              <h2 class="text-2xl font-bold text-white mb-4">5. Suspension & Termination</h2>
+              <div class="text-gray-300 space-y-4">
+                <p>We reserve the right to suspend or terminate services for:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                  <li>Non-payment of fees</li>
+                  <li>Violations of these terms</li>
+                  <li>Abuse of our staff or other customers</li>
+                  <li>Any activity that threatens our infrastructure</li>
+                </ul>
+                <p>We will typically provide notice and opportunity to correct issues before termination, except in cases of severe violations.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="mt-20 text-center">
+        <div class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-xl p-8 border border-gray-700 shadow-xl hover-scale transition-all duration-500">
+          <h2 class="text-3xl font-bold text-white mb-4">Ready to host your Minecraft server?</h2>
+          <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">Join thousands of satisfied customers with our high-performance hosting solutions.</p>
+          <div class="flex justify-center space-x-4">
+            <a href="#" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-md text-lg font-medium text-white hover:from-blue-500 hover:to-purple-500 transition-all duration-300 shadow-lg hover:shadow-blue-500/30">
+              Get Started
+            </a>
+            <a href="#" class="px-6 py-3 border border-gray-600 rounded-md text-lg font-medium text-white hover:bg-gray-800/50 transition-all duration-300">
+              Contact Support
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800/80 border-t border-gray-700 py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">MineHost</h3>
+            <p class="text-gray-400">Premium Minecraft hosting with unbeatable performance and support.</p>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Services</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Minecraft Hosting</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">VPS Hosting</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Dedicated Servers</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Web Hosting</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Support</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Knowledge Base</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Status Page</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Community</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Acceptable Use</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Refund Policy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400">
+          <p>© 2023 MineHost. All rights reserved. Not affiliated with Mojang or Microsoft.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Intersection Observer for scroll animations
+      const sections = document.querySelectorAll('.section-fade');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('section-visible');
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

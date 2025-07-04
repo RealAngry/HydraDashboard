@@ -1,0 +1,416 @@
+
+  <%- include('./components/admin-sidebar') %>
+    <div class="md:pl-64 flex flex-col flex-1 h-screen"> 
+      <main class="flex-1 pb-32">
+        <div class="py-6">
+          <% /* Skeleton loader, lasts about 0.3s to let the page content load */ %>
+          <%- include('./components/skeleton') %>
+          <div class="hidden max-w-screen-2xl pt-8 mx-auto px-4 sm:px-6 md:px-16" id="content">
+            <div class="lg:flex lg:items-center lg:justify-between rounded-3xl mb-8">
+              <div class="min-w-0 flex-1">
+                <div class="flex">
+                  <div class="relative">
+                    <h2 class="text-2xl font-semibold text-white sm:truncate tracking-tight">Admin Dashboard</h2>
+                    <p class="text-sm font-normal text-zinc-400 mt-1">Perform administrative actions on the Draco Dash.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 sm:mt-0">
+                <div class="flex space-x-3">
+                  <a href="../scannodes" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Scan Nodes
+                  </a>
+                  <a href="../scanimages" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Scan Images
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Status Messages -->
+            <% if (req.query.err || req.query.success) { %>
+            <div class="mb-6 animate-fade-in">
+              <% if (req.query.err) { %>
+                <div class="bg-red-900/40 border border-red-800/50 rounded-xl p-4 text-sm text-red-100 backdrop-blur-sm">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-300" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Error: <code class="font-mono bg-red-900/50 px-2 py-1 rounded"><%= req.query.err %></code></span>
+                  </div>
+                </div>
+              <% } %>
+              
+              <% if (req.query.success) { %>
+                <div class="bg-green-900/40 border border-green-800/50 rounded-xl p-4 text-sm text-green-100 backdrop-blur-sm">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-300" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Success: <code class="font-mono bg-green-900/50 px-2 py-1 rounded"><%= req.query.success %></code></span>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+            <% } %>
+            
+            <!-- Admin Tools -->
+            <% if (admin == true) { %>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- User Management Card -->
+              <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 hover:border-gray-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-gray-900/20">
+                <div class="flex items-center mb-6">
+                  <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </div>
+                  <h2 class="text-xl font-semibold text-white">User Management</h2>
+                </div>
+                
+                <div class="space-y-5">
+                  <!-- Ban Form -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Ban User</label>
+                    <div class="space-y-3">
+                      <input type="email" id="ban-email" placeholder="user@example.com" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                      <input type="text" id="ban-reason" placeholder="Reason for ban" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                      <button onclick="ban()" class="w-full flex items-center justify-center bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-3 px-6 rounded-xl text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-red-500/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                        </svg>
+                        Ban User
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <!-- Unban Form -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Unban User</label>
+                    <div class="flex space-x-3">
+                      <input type="email" id="unban-email" placeholder="user@example.com" class="flex-1 bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                      <button onclick="unban()" class="flex items-center justify-center bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white py-3 px-6 rounded-xl text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-indigo-500/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Economy Management Card -->
+              <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 hover:border-gray-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-gray-900/20">
+                <div class="flex items-center mb-6">
+                  <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h2 class="text-xl font-semibold text-white">Economy Management</h2>
+                </div>
+                
+                <div class="space-y-5">
+                  <!-- Add Coins -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Add Coins</label>
+                    <div class="space-y-3">
+                      <input type="email" id="ac-email" placeholder="user@example.com" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                      <div class="flex space-x-3">
+                        <input type="number" id="ac-amount" placeholder="Amount" class="flex-1 bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                        <button onclick="addCoins()" class="flex items-center justify-center bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white py-3 px-6 rounded-xl text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-indigo-500/20">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Promo Codes -->
+                  <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Create Promo Code</label>
+                    <div class="space-y-3">
+                      <input type="text" id="promo-code" placeholder="SUMMER2023" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                      <div class="grid grid-cols-2 gap-3">
+                        <div>
+                          <label class="block text-xs text-gray-400 mb-1">Max Uses</label>
+                          <input type="number" id="promo-max-uses" placeholder="100" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                        </div>
+                        <div>
+                          <label class="block text-xs text-gray-400 mb-1">Coin Amount</label>
+                          <input type="number" id="promo-coins" placeholder="500" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                        </div>
+                      </div>
+                      <button onclick="addPromoCode()" class="w-full flex items-center justify-center bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white py-3 px-6 rounded-xl text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-indigo-500/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Create Promo Code
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Resource Management Card -->
+              <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 hover:border-gray-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-gray-900/20">
+                <div class="flex items-center mb-6">
+                  <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                    </svg>
+                  </div>
+                  <h2 class="text-xl font-semibold text-white">Resource Management</h2>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Add Resources</label>
+                  <div class="space-y-3">
+                    <input type="email" id="ar-email" placeholder="user@example.com" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                    <div class="grid grid-cols-3 gap-3">
+                      <div>
+                        <label class="block text-xs text-gray-400 mb-1">CPU Cores</label>
+                        <input type="number" id="ar-cpu" placeholder="1" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                      </div>
+                      <div>
+                        <label class="block text-xs text-gray-400 mb-1">RAM (GB)</label>
+                        <input type="number" id="ar-ram" placeholder="2" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                      </div>
+                      <div>
+                        <label class="block text-xs text-gray-400 mb-1">Disk (GB)</label>
+                        <input type="number" id="ar-disk" placeholder="10" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                      </div>
+                    </div>
+                    <button onclick="addResources()" class="w-full flex items-center justify-center bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white py-3 px-6 rounded-xl text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-indigo-500/20">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Add Resources
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Announcements Card -->
+              <div class="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 hover:border-gray-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-gray-900/20">
+                <div class="flex items-center mb-6">
+                  <div class="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                    </svg>
+                  </div>
+                  <h2 class="text-xl font-semibold text-white">Announcements</h2>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-gray-300 mb-2">Create Announcement</label>
+                  <div class="space-y-3">
+                    <input type="text" id="ann-title" placeholder="Maintenance Notice" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                    <div>
+                      <label class="block text-xs text-gray-400 mb-1">Message</label>
+                      <textarea id="ann-message" rows="3" placeholder="Important announcement content..." class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200"></textarea>
+                    </div>
+                    <input type="text" id="ann-author" placeholder="Admin Team" class="w-full bg-gray-700/30 border border-gray-600/50 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 transition duration-200">
+                    <button onclick="addAnnouncement()" class="w-full flex items-center justify-center bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white py-3 px-6 rounded-xl text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-indigo-500/20">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                      Post Announcement
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </main>
+      
+      <%- include('./components/footer') %>
+    </div>
+  </div>
+
+  <script>
+    // Input validation function
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    async function unban() {
+      const email = document.getElementById("unban-email").value;
+      if (!email) {
+        alert("Please enter an email address");
+        return;
+      }
+      if (!validateEmail(email)) {
+        alert("Please enter a valid email address");
+        return;
+      }
+      document.location.href = `/unban?email=${encodeURIComponent(email)}`;
+    };
+
+    async function ban() {
+      const email = document.getElementById("ban-email").value;
+      const reason = document.getElementById("ban-reason").value;
+      
+      if (!email) {
+        alert("Please enter an email address");
+        return;
+      }
+      if (!validateEmail(email)) {
+        alert("Please enter a valid email address");
+        return;
+      }
+      if (!reason) {
+        alert("Please enter a reason for the ban");
+        return;
+      }
+      
+      document.location.href = `/ban?email=${encodeURIComponent(email)}&reason=${encodeURIComponent(reason)}`;
+    };
+
+    async function addCoins() {
+      const email = document.getElementById("ac-email").value;
+      const amount = document.getElementById("ac-amount").value;
+      
+      if (!email) {
+        alert("Please enter an email address");
+        return;
+      }
+      if (!validateEmail(email)) {
+        alert("Please enter a valid email address");
+        return;
+      }
+      if (!amount || isNaN(amount)) {
+        alert("Please enter a valid coin amount");
+        return;
+      }
+      
+      document.location.href = `/addcoins?amount=${encodeURIComponent(amount)}&email=${encodeURIComponent(email)}`;
+    };
+
+    async function addResources() {
+      const email = document.getElementById("ar-email").value;
+      const cpu = document.getElementById("ar-cpu").value;
+      const ram = document.getElementById("ar-ram").value;
+      const disk = document.getElementById("ar-disk").value;
+      
+      if (!email) {
+        alert("Please enter an email address");
+        return;
+      }
+      if (!validateEmail(email)) {
+        alert("Please enter a valid email address");
+        return;
+      }
+      if (!cpu && !ram && !disk) {
+        alert("Please enter at least one resource value");
+        return;
+      }
+      
+      document.location.href = `/addresources?email=${encodeURIComponent(email)}&cpu=${encodeURIComponent(cpu)}&ram=${encodeURIComponent(ram)}&disk=${encodeURIComponent(disk)}`;
+    };
+
+    async function addAnnouncement() {
+      const title = document.getElementById('ann-title').value;
+      const message = document.getElementById('ann-message').value;
+      const author = document.getElementById('ann-author').value;
+
+      if (!title) {
+        alert('Please enter a title for the announcement');
+        return;
+      }
+      if (!message) {
+        alert('Please enter the announcement message');
+        return;
+      }
+      if (!author) {
+        alert('Please enter the author name');
+        return;
+      }
+
+      try {
+        const response = await fetch('/add-announcement', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title, message, author }),
+        });
+    
+        const data = await response.json();
+    
+        if (response.ok) {
+          alert(data.message);
+          window.location.href = '/admin?success=ANNOUNCEMENT_ADDED';
+        } else {
+          alert(`Error: ${data.error}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong. Please try again.');
+      }
+    }
+
+    async function addPromoCode() {
+      const code = document.getElementById('promo-code').value;
+      const maxUses = document.getElementById('promo-max-uses').value;
+      const coins = document.getElementById('promo-coins').value;
+
+      if (!code) {
+        alert('Please enter a promo code');
+        return;
+      }
+      if (!maxUses || isNaN(maxUses)) {
+        alert('Please enter a valid number for max uses');
+        return;
+      }
+      if (!coins || isNaN(coins)) {
+        alert('Please enter a valid coin amount');
+        return;
+      }
+
+      try {
+        const response = await fetch('/add-promocode', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code, maxUses, coins }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert(data.message);
+          window.location.reload();
+        } else {
+          alert(`Error: ${data.error}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong. Please try again.');
+      }
+    }
+
+    // Add input focus effects
+    document.querySelectorAll('input, textarea').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.parentElement.classList.add('ring-2', 'ring-indigo-500/30');
+      });
+      input.addEventListener('blur', () => {
+        input.parentElement.classList.remove('ring-2', 'ring-indigo-500/30');
+      });
+    });
+  </script>
+</body>
+

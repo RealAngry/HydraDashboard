@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Footer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .footer-animate {
+            animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        
+        .progress-track {
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.4s ease;
+        }
+        
+        .glow-link {
+            transition: all 0.3s ease;
+        }
+        
+        .glow-link:hover {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+            color: #93c5fd !important;
+        }
+        
+        .version-badge {
+            transition: all 0.3s ease;
+            background: rgba(30, 41, 59, 0.5);
+        }
+        
+        .version-badge:hover {
+            background: rgba(30, 41, 59, 0.7);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Your main content here -->
+    <main class="flex-grow mb-16">
+        <!-- Content goes here -->
+    </main>
+
+    <!-- Fixed Footer -->
+    <footer class="w-full bg-gray-900/80 border-t border-gray-700 backdrop-blur-lg footer-animate fixed bottom-0 z-50">
+        <div class="progress-track">
+            <div class="progress-bar" id="loadProgress"></div>
+        </div>
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-sm text-gray-300 mb-2 sm:mb-0">
+                 Client Powered by <a href="https://weblabexports.in" 
+                                  class="text-blue-300 glow-link font-medium" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer">WEBLAB</a>   v3.0 •
+                    </code>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced loading performance measurement
+        document.addEventListener('readystatechange', (event) => {
+            if (event.target.readyState === 'complete') {
+                const loadEnd = performance.now();
+                const loadTime = ((loadEnd - performance.timing.navigationStart) / 1000).toFixed(2);
+                
+                // Animate progress bar to completion
+                const progressBar = document.getElementById('loadProgress');
+                progressBar.style.width = '100%';
+                
+                // Animate the load time counter
+                let current = 0;
+                const increment = loadTime / 20;
+                const loadTimeElement = document.getElementById('loadtime');
+                const counter = setInterval(() => {
+                    current = Math.min(parseFloat(current) + parseFloat(increment), loadTime);
+                    loadTimeElement.textContent = current.toFixed(2) + 's';
+                    
+                    if (current >= loadTime) {
+                        clearInterval(counter);
+                        // Add special effect for fast loads
+                        if (loadTime < 0.5) {
+                            loadTimeElement.innerHTML += ' <span class="text-blue-300">⚡</span>';
+                            loadTimeElement.classList.add('text-green-300');
+                        }
+                    }
+                }, 20);
+                
+                // Fade out progress bar
+                setTimeout(() => {
+                    progressBar.style.opacity = '0';
+                    setTimeout(() => {
+                        document.querySelector('.progress-track').style.height = '0';
+                    }, 500);
+                }, 1000);
+            }
+        });
+
+        // Fallback for browsers without performance.timing
+        if (!window.performance || !window.performance.timing) {
+            const startTime = Date.now();
+            window.addEventListener('load', () => {
+                const loadTime = ((Date.now() - startTime) / 1000).toFixed(2);
+                document.getElementById('loadtime').textContent = loadTime + 's';
+                document.getElementById('loadProgress').style.width = '100%';
+            });
+        }
+    </script>
+</body>
+</html>

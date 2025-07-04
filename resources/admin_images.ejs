@@ -1,0 +1,120 @@
+
+    <%- include('./components/admin-sidebar') %>
+    
+    <div class="md:pl-64 flex flex-col flex-1 min-h-screen">
+
+      
+      <main class="flex-1 pb-8">
+        <div class="py-6">
+          <% /* Skeleton loader */ %>
+          <%- include('./components/skeleton') %>
+          
+          <div class="hidden max-w-screen-2xl pt-6 mx-auto px-4 sm:px-6 md:px-8 lg:px-12" id="content">
+            <!-- Header Section -->
+            <div class="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between mb-8">
+              <div class="flex-1">
+                <h1 class="text-2xl font-bold text-white tracking-tight">Docker Images</h1>
+                <p class="text-sm text-gray-400 mt-1">Manage your container images and deployments</p>
+              </div>
+              <div class="flex-shrink-0">
+  
+              </div>
+            </div>
+
+            <% /* Status messages - Fixed positioning and styling */ %>
+            <% if (req.query.err) { %>
+              <div class="rounded-lg bg-red-900/30 border border-red-700/50 p-4 mb-6 backdrop-blur-sm">
+                <div class="flex items-start">
+                  <svg class="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-100">Error</h3>
+                    <div class="mt-1 text-sm text-red-200">
+                      <p>Error code: <code class="font-mono bg-red-800/40 px-1.5 py-0.5 rounded-md"><%= req.query.err %></code></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+            
+            <% if (req.query.success) { %>
+              <div class="rounded-lg bg-green-900/30 border border-green-700/50 p-4 mb-6 backdrop-blur-sm">
+                <div class="flex items-start">
+                  <svg class="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <div class="ml-3">
+                    <h3 class="text-sm font-medium text-green-100">Success</h3>
+                    <div class="mt-1 text-sm text-green-200">
+                      <p>Action completed: <code class="font-mono bg-green-800/40 px-1.5 py-0.5 rounded-md"><%= req.query.success %></code></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+
+            <% /* Images grid - Improved card design */ %>
+            <% if (images && images.length > 0) { %>
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <% images.forEach(image => { %>
+                  <div class="bg-gray-800/40 border border-gray-700/50 rounded-xl overflow-hidden hover:border-indigo-500/70 transition-all duration-200 hover:shadow-lg hover:shadow-indigo-500/10">
+                    <div class="p-5">
+                      <div class="flex items-start justify-between mb-3">
+                        <h3 class="text-lg font-semibold text-white truncate pr-2"><%= image.Name %></h3>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-indigo-900/60 text-indigo-100">
+                          Active
+                        </span>
+                      </div>
+                      <p class="text-sm text-gray-300 mb-4 line-clamp-3 min-h-[3rem]"><%= image.Description || 'No description provided' %></p>
+                      
+                      <div class="space-y-3">
+                        <div class="flex items-start text-sm">
+                          <svg class="flex-shrink-0 mr-2 h-4 w-4 text-gray-400 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" />
+                          </svg>
+                          <span class="text-gray-300 font-mono text-xs break-all"><%= image.Image %></span>
+                        </div>
+                        <div class="flex items-center text-sm">
+                          <svg class="flex-shrink-0 mr-2 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-7.536 5.879a1 1 0 001.415 0 3 3 0 014.242 0 1 1 0 001.415-1.415 5 5 0 00-7.072 0 1 1 0 000 1.415z" clip-rule="evenodd" />
+                          </svg>
+                          <span class="text-gray-400 text-xs font-mono" title="<%= image.Id %>">ID: <%= image.Id.slice(0, 8) %>...</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="bg-gray-800/30 px-5 py-3 flex justify-end space-x-2 border-t border-gray-700/50">
+                      <button class="inline-flex items-center px-3 py-1.5 border border-gray-600 shadow-sm text-xs font-medium rounded-lg text-white bg-gray-700/50 hover:bg-gray-600/70 focus:outline-none focus:ring-1 focus:ring-gray-500 transition-colors duration-150">
+                        Edit
+                      </button>
+                      <button class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors duration-150">
+                        Deploy
+                      </button>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            <% } else { %>
+              <div class="text-center py-16 bg-gray-800/30 border border-gray-700/50 rounded-xl">
+                <svg class="mx-auto h-16 w-16 text-gray-500/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <h3 class="mt-4 text-lg font-medium text-white">No images found</h3>
+                <p class="mt-2 text-sm text-gray-400 max-w-md mx-auto">You haven't added any Docker images yet. Add your first image to get started with deployments.</p>
+                <div class="mt-6">
+                  <button class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-150">
+                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    Add New Image
+                  </button>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </main>
+        
+        <%- include('./components/footer') %>
+      </div>
+    </div>
+</body>

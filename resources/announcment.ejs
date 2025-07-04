@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Announcement | <%= name %> Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary: #fb923c;
+      --primary-hover: #ea580c;
+      --primary-light: rgba(251, 146, 60, 0.1);
+      --bg: #10181e;
+      --card-bg: #1a232b;
+      --text-primary: #ffffff;
+      --text-secondary: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --success: #10b981;
+      --error: #ef4444;
+      --indigo: #6366f1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .loadingbar .bar {
+      background: var(--primary);
+      height: 3px;
+      box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+      animation: pulse 1.5s infinite;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+      border-color: rgba(251, 146, 60, 0.3);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      outline: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(251, 146, 60, 0.2);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .copy-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+      font-size: 0.875rem;
+    }
+
+    .copy-notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .input-field {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      width: 100%;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+
+    .input-field:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(251, 146, 60, 0.2);
+    }
+
+    /* Status messages */
+    .status-message {
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .status-error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .status-success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-icon {
+      padding: 0.25rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .status-icon-error {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    .status-icon-success {
+      background: rgba(16, 185, 129, 0.2);
+    }
+
+    .status-content {
+      flex: 1;
+    }
+
+    .status-title {
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .status-text {
+      font-size: 0.8125rem;
+      font-family: 'Cabin', sans-serif;
+    }
+
+    /* Announcement cards */
+    .announcement-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(to bottom, rgba(26, 35, 43, 0.7), rgba(26, 35, 43, 0.9));
+      transition: all 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .announcement-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+      border-color: rgba(251, 146, 60, 0.3);
+    }
+
+    .announcement-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .announcement-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .announcement-tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--indigo);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .announcement-date {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .announcement-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0.75rem 0;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .announcement-message {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .announcement-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 0.75rem;
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .announcement-author {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .author-avatar {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--indigo);
+    }
+
+    .author-name {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .read-more {
+      font-size: 0.75rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: color 0.2s ease;
+    }
+
+    .read-more:hover {
+      color: var(--primary-hover);
+    }
+
+    /* Empty state */
+    .empty-state {
+      border: 2px dashed rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(to bottom, rgba(26, 35, 43, 0.3), rgba(26, 35, 43, 0.5));
+    }
+
+    .empty-icon {
+      width: 3rem;
+      height: 3rem;
+      margin: 0 auto 1rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-description {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+      max-width: 24rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 767px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .announcement-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .empty-state {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .announcement-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Accessibility improvements */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    [aria-busy="true"] {
+      cursor: progress;
+    }
+
+    [aria-disabled="true"] {
+      cursor: not-allowed;
+    }
+
+    /* Focus styles for keyboard navigation */
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <%- include('./components/wrapper') %>
+  <%- include('./components/header') %>
+
+  <!-- Loading Bar -->
+  <div class="loadingbar"><div class="bar"></div></div>
+
+  <!-- Copy Notification -->
+  <div id="copyNotification" class="copy-notification" role="alert" aria-live="polite">
+    Copied to clipboard!
+  </div>
+
+  <main class="flex-1 p-4 md:p-6">
+    <div class="max-w-7xl mx-auto">
+      <!-- Page header -->
+      <div class="page-header flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold text-white">News Dashboard</h1>
+          <p class="text-sm text-gray-400 mt-1">Latest updates from <%= name %></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="announcement-tag">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z" clip-rule="evenodd" />
+            </svg>
+            <%= announcements.length %> Announcements
+          </span>
+        </div>
+      </div>
+
+      <!-- Status messages -->
+      <% if (req.query.err) { %>
+        <div class="status-message status-error fade-in">
+          <div class="status-icon status-icon-error">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="status-content">
+            <p class="status-title">Operation Failed</p>
+            <p class="status-text"><%= req.query.err %></p>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (req.query.success) { %>
+        <div class="status-message status-success fade-in">
+          <div class="status-icon status-icon-success">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="status-content">
+            <p class="status-title">Success!</p>
+            <p class="status-text"><%= req.query.success %></p>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- News grid -->
+      <% if (announcements && announcements.length > 0) { %>
+        <div class="announcement-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <% announcements.forEach(announcement => { %>
+            <div class="announcement-card">
+              <div class="p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="announcement-tag">Announcement</span>
+                  <span class="announcement-date">
+                    <%= new Date(announcement.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %>
+                  </span>
+                </div>
+                <h3 class="announcement-title"><%= announcement.title %></h3>
+                <p class="announcement-message"><%= announcement.message %></p>
+                <div class="announcement-footer">
+                  <div class="announcement-author">
+                    <div class="author-avatar">
+                      <%= announcement.author.charAt(0).toUpperCase() %>
+                    </div>
+                    <span class="author-name"><%= announcement.author %></span>
+                  </div>
+                  <button class="read-more">
+                    Read more
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">
+          <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+          </svg>
+          <h3 class="empty-title">No announcements yet</h3>
+          <p class="empty-description">When announcements are made, they'll appear here.</p>
+          <button class="btn btn-primary" onclick="window.location.reload()">
+            Refresh page
+          </button>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('./components/footer') %>
+
+  <script>
+    // Simulate loading progress
+    document.addEventListener('DOMContentLoaded', function() {
+      const loadingBar = document.querySelector('.loadingbar .bar');
+      if (loadingBar) {
+        loadingBar.style.width = '30%';
+        setTimeout(() => { loadingBar.style.width = '70%'; }, 200);
+        setTimeout(() => { loadingBar.style.width = '100%'; }, 400);
+        setTimeout(() => { loadingBar.style.opacity = '0'; }, 600);
+        setTimeout(() => { loadingBar.remove(); }, 1000);
+      }
+
+      // Copy notification function
+      window.showCopyNotification = function() {
+        const notification = document.getElementById('copyNotification');
+        if (notification) {
+          notification.classList.add('show');
+          setTimeout(() => {
+            notification.classList.remove('show');
+          }, 2000);
+        }
+      };
+
+      // Add click event to all read more buttons
+      document.querySelectorAll('.read-more').forEach(button => {
+        button.addEventListener('click', function() {
+          // Implement your read more functionality here
+          console.log('Read more clicked');
+        });
+      });
+
+      // Improved touch support for mobile devices
+      if ('ontouchstart' in window) {
+        document.documentElement.classList.add('touch');
+      } else {
+        document.documentElement.classList.add('no-touch');
+      }
+    });
+
+    // Prevent double-click on buttons
+    document.addEventListener('DOMContentLoaded', function() {
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          if (button.getAttribute('aria-busy') === 'true') {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+          }
+          button.setAttribute('aria-busy', 'true');
+          setTimeout(() => {
+            button.setAttribute('aria-busy', 'false');
+          }, 1000);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

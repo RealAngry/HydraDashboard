@@ -1,0 +1,54 @@
+/* Custom styles for referral page */
+.card {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1rem 1.5rem;
+}
+
+.table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+}
+
+.badge {
+    font-weight: 500;
+}
+
+.btn {
+    transition: all 0.2s ease;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    .input-group > .form-control,
+    .input-group > .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .input-group > .btn:last-child {
+        margin-bottom: 0;
+    }
+}
